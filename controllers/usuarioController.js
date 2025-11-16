@@ -262,12 +262,14 @@ const listarUsuarios = async (req, res) => {
 const buscarUsuarioPorId = async (req, res) => {
   try {
     const { id } = req.params;
-    const usuario = await Usuario.findById(id).select("-senha");
+    const usuario = await Usuario.findById(id)
+    .populate('assignedTo')
+    .select("-senha");
 
     if (!usuario) {
       return res.status(404).json({ error: "Usuário não encontrado." });
     }
-    res.status(200).json({ usuario });
+    res.status(200).json( usuario );
   } catch (err) {
     res
       .status(500)
