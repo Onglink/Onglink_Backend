@@ -15,7 +15,7 @@ const {
 
 const ROLES_PUBLICADORES = ['admin', 'ong'];
 
-router.post('/', checkRole(ROLES_PUBLICADORES), criarPublicacao);
+router.post('/', checkRole(ROLES_PUBLICADORES), upload.single('image'),criarPublicacao);
 router.get('/',  buscarPublicacao);
 router.get('/:id', buscarPublicacaoPorId);
 router.put('/:id', checkRole(ROLES_PUBLICADORES), editarPublicacao);
