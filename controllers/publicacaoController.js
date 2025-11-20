@@ -141,10 +141,11 @@ const criarPublicacao = async (req, res) => {
 
         const publicacaoSalva = await novaPublicacao.save();
 
-        res.status(201).json({
-            message: "Publicação efetuada com sucesso",
-            id: publicacaoSalva._id
-        });
+         const publicacaoPopulada = await Publicacao.findById(publicacaoSalva._id)
+            .populate('criadoPor', 'nome email');
+
+        res.status(201).json(publicacaoPopulada);
+
     } catch (error) {
         console.error(error);
         res.status(400).json({
