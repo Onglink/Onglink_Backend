@@ -31,7 +31,7 @@ const checkRole = (rolesPermitidas) => (req, res, next) => {
 
         // 3. Verificar a Autorização (Role/Status)
         // Checa se o status do usuário está no array de roles permitidas
-        if (!rolesPermitidas.includes(req.user.status)) {
+        if (!rolesPermitidas.includes(req.user.role)) {
             // Se o status não for permitido (ex: é 'user'), retorna Forbidden
             return res.status(403).json({ 
                 message: 'Acesso negado. Seu nível de cadastro (status) não permite esta ação.' 
