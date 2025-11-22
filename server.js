@@ -45,6 +45,9 @@ const swaggerFile = require('./swagger-output.json');
 // Rota do Swagger (Pública, ANTES da autenticação)
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
+const parceiroRoutes = require('./routes/parceiro');
+app.use('/api/parceiros', parceiroRoutes);
+
 // Middleware de autenticação (Protege todas as rotas abaixo)
 app.use(apiKeyAuth);
 
@@ -69,11 +72,13 @@ const ongRoutes = require('./routes/ong');
 const usuarioRoutes = require('./routes/usuario');
 const publicacaoRoutes = require('./routes/publicacao');
 const denunciaRoutes = require('./routes/denuncia');
+//const parceiroRoutes = require('./routes/parceiro');
 
 app.use('/api/ongs', ongRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/publicacoes', publicacaoRoutes);
 app.use('/api/denuncia', denunciaRoutes);
+//app.use('/api/parceiros', parceiroRoutes);
 
 
 
