@@ -117,11 +117,13 @@ const criarPublicacao = async (req, res) => {
     try {
         // O Multer popula o req.body com os campos de texto
         const { titulo, descricao, criadoPor } = req.body;
+        console.log("Recebendo publicação:", { titulo, criadoPor });
 
         let imagensArray = [];
         
         // Verifica se o arquivo veio na requisição
         if (req.file) {
+            console.log("Arquivo recebido:", req.file.originalname);
             // --- CONVERSÃO PARA BASE64 ---
             // Como a Vercel não salva arquivos, convertemos a imagem em uma String gigante
             // e salvamos diretamente no banco de dados MongoDB.
@@ -130,6 +132,8 @@ const criarPublicacao = async (req, res) => {
             
             imagensArray.push(dataURI);
             console.log("Imagem convertida e salva no array.");
+        }else {
+            console.log("Nenhum arquivo de imagem recebido.");
         }
 
         const novaPublicacao = new Publicacao({
@@ -142,7 +146,7 @@ const criarPublicacao = async (req, res) => {
         const publicacaoSalva = await novaPublicacao.save();
 
          const publicacaoPopulada = await Publicacao.findById(publicacaoSalva._id)
-            .populate('criadoPor', 'nome email');
+            .populate('criadoPor', 'nome email logo');
 
         res.status(201).json(publicacaoPopulada);
 
