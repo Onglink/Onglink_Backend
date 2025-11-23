@@ -1,23 +1,27 @@
-// parceiroController.js - CÓDIGO FINAL COM FILTRO DE APROVAÇÃO E PROJEÇÃO
+// parceiroController.js - CÓDIGO FINAL COM MAIS CAMPOS NO MODAL
 
 const Ong = require('../models/ongModel');
 
 const listarParceiros = async (req, res) => {
     try {
-
-        // 1. [Backend] Filtro Ativo: Usa $regex /aprovad/i
-        // Isso captura 'APROVADO', 'aprovada', 'Aprovado', etc., ignorando problemas de case.
+        // [Backend] Projeção de dados completa para o Modal
         const lista = await Ong.find({
             situacaoCadastral: { $regex: /aprovad/i }
         },
         {
-            // 2. Projection (Projeção): Quais campos mostrar.
-            // Inclui o 'logo' e o '_id' (essenciais para o Frontend/React).
+            // CAMPOS BÁSICOS
+            _id: 1,
             nomeFantasia: 1,
             telefone: 1,
+            email: 1,
+            descricao: 1,
+            logo: 1,
             causaSocial: 1,
-            logo: 1,      // Campo da Imagem
-            _id: 1        // Chave do React
+            
+            // NOVOS CAMPOS ADICIONADOS PARA O MODAL
+            razaoSocial: 1,
+            endereco: 1,     // Inclui todo o sub-documento de Endereço
+            redeSocial: 1,   // Inclui todo o sub-documento de Redes Sociais
         });
 
         res.status(200).json(lista);
