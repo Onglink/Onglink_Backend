@@ -1,27 +1,25 @@
-// parceiroController.js - CÓDIGO FINAL COM MAIS CAMPOS NO MODAL
+// parceiroController.js - CÓDIGO FINAL COM PROJEÇÃO COMPLETA PARA O MODAL
 
 const Ong = require('../models/ongModel');
 
 const listarParceiros = async (req, res) => {
     try {
-        // [Backend] Projeção de dados completa para o Modal
         const lista = await Ong.find({
+            // 1. FILTRO: Apenas aprovados
             situacaoCadastral: { $regex: /aprovad/i }
         },
         {
-            // CAMPOS BÁSICOS
-            _id: 1,
+            // 2. PROJEÇÃO COMPLETA: TODOS OS CAMPOS PARA O MODAL
             nomeFantasia: 1,
             telefone: 1,
-            email: 1,
-            descricao: 1,
-            logo: 1,
             causaSocial: 1,
-            
-            // NOVOS CAMPOS ADICIONADOS PARA O MODAL
-            razaoSocial: 1,
-            endereco: 1,     // Inclui todo o sub-documento de Endereço
-            redeSocial: 1,   // Inclui todo o sub-documento de Redes Sociais
+            logo: 1,
+            email: 1,           // Adicionado
+            descricao: 1,       // Adicionado
+            razaoSocial: 1,     // Adicionado
+            endereco: 1,        // CRUCIAL: Sub-documento
+            redeSocial: 1,      // CRUCIAL: Sub-documento
+            _id: 1              
         });
 
         res.status(200).json(lista);
