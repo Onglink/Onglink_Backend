@@ -164,7 +164,7 @@ const buscarPublicacao = async (req, res) => {
     try {
         const publicacoes = await Publicacao
             .find({})
-            .populate('criadoPor', 'nome email')
+            .populate('criadoPor', 'nome email logo')
             .sort({ createdAt: -1 }) // Mais recentes primeiro
             .exec();
 
@@ -182,7 +182,7 @@ const buscarPublicacaoPorId = async (req, res) => {
     try {
         const publicacao = await Publicacao
             .findById(req.params.id)
-            .populate('criadoPor', 'nome email');
+            .populate('criadoPor', 'nome email logo');
 
         if (!publicacao) {
             return res.status(404).json({ message: 'Publicação não encontrada.' });
