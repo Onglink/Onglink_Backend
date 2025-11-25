@@ -1,23 +1,27 @@
-// controllers/shareLinkController.js
+const SharedLink = require('../models/shareLinkModel');
+const crypto = require('crypto'); // Biblioteca nativa do Node (Zero risco)
 
-const { nanoid } = require('nanoid');
-const SharedLink = require('../models/SharedLink');
-
-// Função que gera o link e salva no banco
 const generateShareLink = async (req, res) => {
-  const { publicationId, userId, channel } = req.body;
+  try {
+    const { publicationId, userId, channel } = req.body;
 
-  // Gera um código curto único
-  const shortCode = nanoid(8);
+    // Gera um código aleatório de 8 caracteres usando o próprio Node.js
+    const shortCode = crypto.randomBytes(4).toString('hex');
 
-  // Monta a URL final
-  const shortUrl = `${process.env.BASE_URL}/p/${publicationId}?ref=${channel}&uid=${userId}&s=${shortCode}`;
+    // Usa a URL do Front que está no .env ou um fallback seguro
+    // IMPORTANTE: Ajuste o fallback para o seu link real da Vercel se quiser
+    const baseUrl = process.env.BASE_URL_FRONT || 'https://onglink.vercel.app'; // Ajuste aqui se souber a URL exata
+    
+    // Monta a URL
+    const shortUrl = `${baseUrl}/post/${publicationId}?ref=${channel}&uid=${userId}&s=${shortCode}`;
 
-  // Salva no banco
-  await SharedLink.create({ publicationId, userId, channel, shortCode });
+    await SharedLink.create({ publicationId, userId, channel, shortCode });
 
-  // Retorna o link gerado
-  res.json({ shortUrl });
+    res.json({ shortUrl });
+  } catch (error) {
+    console.error("Erro no ShareLink:", error);
+    res.status(500).json({ error: "Erro ao gerar link" });
+  }
 };
 
 module.exports = { generateShareLink };
