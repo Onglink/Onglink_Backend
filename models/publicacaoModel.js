@@ -9,7 +9,7 @@ const publicacaoSchema = new Schema({
     imagem:[{type: String, required: true}],
     criadoPor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Ong',
+    ref: 'Usuario',
     required:true
   }
 },
