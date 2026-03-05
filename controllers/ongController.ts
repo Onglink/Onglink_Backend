@@ -1,8 +1,9 @@
+import { Request, Response } from 'express';
 const Ong = require('../models/ongModel');
 const Usuario = require('../models/usuarioModel');
 
 
-const cadastrarOng = async (req, res) => {
+const cadastrarOng = async (req: Request, res: Response) => {
     try {
 
         const novaOng = new Ong(req.body);
@@ -24,32 +25,34 @@ const cadastrarOng = async (req, res) => {
         });
 
     } catch (err) {
+        const errorMessage = err instanceof Error ? err.message :"Erro desconhecido";
         console.error("Erro ao cadastrar ONG:", err);
         res.status(400).json({
             error: 'Erro ao cadastrar ONG.',
-            details: err.message || err
+            details: errorMessage || err
         });
     }
 };
 
 
 
-const listarOngs = async (req, res) => {
+const listarOngs = async (req: Request, res: Response) => {
     try {
 
         const lista = await Ong.find({});
 
         res.status(200).json(lista);
     } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Erro ao listar ONGs";
         res.status(500).json({
             error: 'Erro ao listar ONGs.',
-            details: err.message || err
+            details: errorMessage || err
         });
     }
 };
 
 
-const buscarOngPorId = async (req, res) => {
+const buscarOngPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
@@ -63,16 +66,17 @@ const buscarOngPorId = async (req, res) => {
 
         res.status(200).json(ong);
     } catch (err) {
+        const errorMessage = err instanceof Error ? err.message :"Erro ao buscar ONG pelo ID.";
         res.status(500).json({
             error: 'Erro ao buscar ONG. Verifique se o ID é válido.',
-            details: err.message || err
+            details: errorMessage || err
         });
     }
 };
 
 
 // --- UPDATE (Dados Gerais) ---
-const atualizarOng = async (req, res) => {
+const atualizarOng = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         
@@ -91,11 +95,12 @@ const atualizarOng = async (req, res) => {
 
         res.status(200).json({ message: 'ONG atualizada!', ong: resultado });
     } catch (err) {
-        res.status(400).json({ error: 'Erro ao atualizar ONG.', details: err.message });
+        const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar ONG.";
+        res.status(400).json({ error: 'Erro ao atualizar ONG.', details: errorMessage || err });
     }
 };
 // --- UPDATE (Apenas Status - Uso Administrativo) ---
-const atualizarStatusOng = async (req, res) => {
+const atualizarStatusOng = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { situacaoCadastral } = req.body;
@@ -110,11 +115,12 @@ const atualizarStatusOng = async (req, res) => {
 
         res.status(200).json({ message: 'Status atualizado!', ong: resultado });
     } catch (err) {
-        res.status(400).json({ error: 'Erro ao atualizar status.', details: err.message });
+        const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar status da ONG.";
+        res.status(400).json({ error: 'Erro ao atualizar status.', details: errorMessage || err });
     }
 };
 
-const deletarOng = async (req, res) => {
+const deletarOng = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
@@ -131,9 +137,10 @@ const deletarOng = async (req, res) => {
             deleted: true
         });
     } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Erro ao deletar ONG.";
         res.status(500).json({
             error: 'Erro ao deletar ONG.',
-            details: err.message || err
+            details: errorMessage || err
         });
     }
 };
