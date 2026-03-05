@@ -1,7 +1,8 @@
+import { Request, Response } from "express";
 const Publicacao = require("../models/publicacaoModel");
 const Denuncia = require("../models/denunciaModel");
 
-const cadastrarDenuncia = async (req, res) => {
+const cadastrarDenuncia = async (req: Request, res: Response) => {
     try {
         const novaDenuncia = new Denuncia(req.body);
         await novaDenuncia.save();
@@ -10,25 +11,27 @@ const cadastrarDenuncia = async (req, res) => {
             id: novaDenuncia._id,
         });
     } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Erro desconhecido";
         res.status(400).json({
             error: "Erro ao efetuar denúncia, dados inválidos ou faltando",
-            details: err.message || err,
+            details: errorMessage || err,
         });
     }
 };
 
-const listarDenuncia = async (req, res) => {
+const listarDenuncia = async (req: Request, res: Response) => {
     try {
         const lista = await Denuncia.find({});
         res.status(200).json(lista);
     } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Erro ao listar Denúncias.";
         res.status(500).json({
             error: "Erro ao listar Denúncias.",
-            details: err.message || err,
+            details: errorMessage || err,
         });
     }
 };
-const buscarDenuncia = async (req, res) => {
+const buscarDenuncia = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const denuncia = await Denuncia.findById(id).populate("assignedTo").exec();
@@ -38,15 +41,16 @@ const buscarDenuncia = async (req, res) => {
 
         res.status(200).json(denuncia);
     } catch (err) {
+        const errorMessage = err instanceof Error ? err.message :"Erro ao buscar a Denúncia solicitada.";
         res.status(500).json({
             error:
                 "Erro ao buscar a Denúncia solicitada, verifique se o Id é válido.",
-            details: err.message || err,
+            details: errorMessage || err,
         });
     }
 };
 
-const deletarDenuncia = async (req, res) => {
+const deletarDenuncia = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const resultado = await Denuncia.findByIdAndDelete(id);
@@ -60,9 +64,10 @@ const deletarDenuncia = async (req, res) => {
             deleted: true,
         });
     } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Erro ao deletar a denúncia.";
         res.status(500).json({
             error: "Erro ao deletar a denúncia.",
-            details: err.message || err,
+            details: errorMessage || err,
         });
     }
 };
