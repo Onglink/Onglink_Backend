@@ -1,6 +1,6 @@
 // routes/shareLink.js
-const express = require('express');
-const router = express.Router();
+//const express = require('express');
+//const router = express.Router();
 const { generateShareLink } = require('../controllers/shareLinkController');
 
 // Define a rota POST /share-link

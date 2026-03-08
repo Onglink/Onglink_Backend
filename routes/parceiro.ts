@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+//const express = require('express');
+//const router = express.Router();
 const { listarParceiros } = require('../controllers/parceiroController');
 
 //const { listarOngs} = require('../controllers/ongController');
