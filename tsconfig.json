@@ -52,6 +52,6 @@
 "esModuleInterop": true,
 "resolveJsonModule": true
 },
-"include": ["**/*.ts"],
+"include": ["**/*.ts", "models/usuarioModel.js"],
 "exclude": ["dist"]
 }
