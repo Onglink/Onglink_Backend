@@ -1,9 +1,10 @@
+import { Request, Response } from 'express';
 const Usuario = require("../models/usuarioModel");
 // const bcrypt = require('bcrypt'); // REMOVIDO PARA TESTE
 const jwt = require("jsonwebtoken");
 
 // --- CADASTRO (SALVA SENHA EM TEXTO PURO - APENAS TESTE) ---
-const cadastrarUsuario = async (req, res) => {
+const cadastrarUsuario = async (req: Request, res: Response) => {
   try {
     const { nome, cpf, email, senha, status } = req.body;
 
@@ -26,22 +27,23 @@ const cadastrarUsuario = async (req, res) => {
       message: "Usuário cadastrado com sucesso!",
       id: novoUsuario._id,
     });
-  } catch (err) {
+  } catch (err: any) {
+    const errorMessage = err instanceof Error ? err.message : "Erro ao cadastrar usuário";
     if (err.code === 11000) {
       return res.status(400).json({
         error: "Email ou CPF já cadastrado.",
-        details: err.message,
+        details: errorMessage,
       });
     }
     res.status(400).json({
       error: "Erro ao cadastrar usuário.",
-      details: err.message || err,
+      details: errorMessage,
     });
   }
 };
 
 // --- LOGIN (COMPARA EM TEXTO PURO - APENAS TESTE) ---
-const loginUsuario = async (req, res) => {
+const loginUsuario = async (req: Request, res: Response) => {
   try {
     const { email, senha } = req.body;
 
@@ -86,19 +88,20 @@ const loginUsuario = async (req, res) => {
 };
 
 // --- LISTAR TODOS ---
-const listarUsuarios = async (req, res) => {
+const listarUsuarios = async (req: Request, res: Response) => {
   try {
     const lista = await Usuario.find({}).select("-senha");
     res.status(200).json(lista);
   } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "Erro ao listar usuários";
     res
       .status(500)
-      .json({ error: "Erro ao listar usuários.", details: err.message });
+      .json({ error: "Erro ao listar usuários.", details: errorMessage });
   }
 };
 
 // --- BUSCAR POR ID ---
-const buscarUsuarioPorId = async (req, res) => {
+const buscarUsuarioPorId = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const usuario = await Usuario.findById(id)
@@ -110,14 +113,15 @@ const buscarUsuarioPorId = async (req, res) => {
     }
     res.status(200).json({ usuario });
   } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "Erro ao buscar usuário por ID";
     res
       .status(500)
-      .json({ error: "Erro ao buscar o usuário.", details: err.message });
+      .json({ error: "Erro ao buscar o usuário.", details: errorMessage });
   }
 };
 
 // --- ATUALIZAR ---
-const atualizarUsuario = async (req, res) => {
+const atualizarUsuario = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const dadosAtualizados = req.body;
@@ -141,14 +145,15 @@ const atualizarUsuario = async (req, res) => {
       .status(200)
       .json({ message: "Usuário atualizado!", usuario: resultado });
   } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar usuário";
     res
       .status(400)
-      .json({ error: "Erro ao atualizar usuário.", details: err.message });
+      .json({ error: "Erro ao atualizar usuário.", details: errorMessage });
   }
 };
 
 // --- DELETAR ---
-const deletarUsuario = async (req, res) => {
+const deletarUsuario = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const resultado = await Usuario.findByIdAndDelete(id);
@@ -159,9 +164,10 @@ const deletarUsuario = async (req, res) => {
 
     res.status(200).json({ message: "Usuário deletado!", deleted: true });
   } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "Erro ao deletar usuário";
     res
       .status(500)
-      .json({ error: "Erro ao deletar usuário.", details: err.message });
+      .json({ error: "Erro ao deletar usuário.", details: errorMessage });
   }
 };
 

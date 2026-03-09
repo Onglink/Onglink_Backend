@@ -1,7 +1,8 @@
+import { Request, Response } from 'express';
 const SharedLink = require('../models/shareLinkModel');
 const crypto = require('crypto'); // Biblioteca nativa do Node (Zero risco)
 
-const generateShareLink = async (req, res) => {
+const generateShareLink = async (req: Request, res: Response) => {
   try {
     const { publicationId, userId, channel } = req.body;
 
