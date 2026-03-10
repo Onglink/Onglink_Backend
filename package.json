@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "node server.js",
-    "dev": "nodemon",
+    "dev": "nodemon --exec ts-node server.ts",
     "build": "tsc --build"
   },
   "repository": {
