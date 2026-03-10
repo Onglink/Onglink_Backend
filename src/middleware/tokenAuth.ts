@@ -1,16 +1,24 @@
 // middlewares/authMiddleware.js
+import { Request, Response, NextFunction } from 'express';
 
 const jwt = require('jsonwebtoken');
 
 // A mesma chave secreta usada no usuarioController.js
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key'; 
 
+interface DecodedUser {
+    id: string;
+    role: string;
+}
+interface AuthRequest extends Request {
+    user?: DecodedUser;
+}
 /**
  * Middleware de Autorização baseado no status (role) do usuário.
  * @param {Array<string>} rolesPermitidas - Array de status que têm permissão para a rota (ex: ['admin', 'ong']).
  * @returns {Function} O middleware do Express.
  */
-const checkRole = (rolesPermitidas) => (req, res, next) => {
+const checkRole = (rolesPermitidas:string) => (req: AuthRequest, res: Response, next: NextFunction) => {
     // 1. Obter o Token do cabeçalho de Autorização (padrão 'Bearer token')
     const authHeader = req.headers.authorization;
     
@@ -31,7 +39,7 @@ const checkRole = (rolesPermitidas) => (req, res, next) => {
 
         // 3. Verificar a Autorização (Role/Status)
         // Checa se o status do usuário está no array de roles permitidas
-        if (!rolesPermitidas.includes(req.user.role)) {
+        if (!req.user || !rolesPermitidas.includes(req.user.role)) {
             // Se o status não for permitido (ex: é 'user'), retorna Forbidden
             return res.status(403).json({ 
                 message: 'Acesso negado. Seu nível de cadastro (status) não permite esta ação.' 
