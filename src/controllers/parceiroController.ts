@@ -1,8 +1,8 @@
 // parceiroController.js - CÓDIGO FINAL COM PROJEÇÃO COMPLETA PARA O MODAL
-
+import { Request, Response } from 'express';
 const Ong = require('../models/ongModel');
 
-const listarParceiros = async (req, res) => {
+const listarParceiros = async (req: Request, res: Response) => {
     try {
         const lista = await Ong.find({
             // 1. FILTRO: Apenas aprovados
@@ -24,10 +24,11 @@ const listarParceiros = async (req, res) => {
 
         res.status(200).json(lista);
     } catch (err) {
+         const errorMessage = err instanceof Error ? err.message :"Erro ao listar parceiros";
         console.error('Erro ao processar a listagem de parceiros:', err);
         res.status(500).json({
             error: 'Erro ao listar ONGs.',
-            details: err.message || err
+            details: errorMessage
         });
     }
 };

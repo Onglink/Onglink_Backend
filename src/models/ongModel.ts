@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+//const mongoose = require('mongoose')
+//const Schema = mongoose.Schema
 
 // --- 1. Sub-Schema para Endereço ---
 const enderecoSchema = new Schema({
