@@ -1,6 +1,6 @@
 // novo router:
-//const express = require('express');
-//const router = express.Router();
+const express = require('express');
+const router_usuario = express.Router();
 
 const {
     cadastrarUsuario,
@@ -11,13 +11,13 @@ const {
     loginUsuario, 
 } = require('../controllers/usuarioController'); 
 
-router.post('/login', loginUsuario);
-router.post('/cadastro', cadastrarUsuario);
-router.get('/', listarUsuarios);
-router.get('/:id', buscarUsuarioPorId);
-router.put('/:id', atualizarUsuario);
-router.delete('/:id', deletarUsuario);
+router_usuario.post('/login', loginUsuario);
+router_usuario.post('/cadastro', cadastrarUsuario);
+router_usuario.get('/', listarUsuarios);
+router_usuario.get('/:id', buscarUsuarioPorId);
+router_usuario.put('/:id', atualizarUsuario);
+router_usuario.delete('/:id', deletarUsuario);
 
 
 
-module.exports = router;
+export const usuarioRoutes = router_usuario;

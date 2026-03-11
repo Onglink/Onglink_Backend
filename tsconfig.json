@@ -47,7 +47,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./", // Alterado de "./src" para "./" para incluir o arquivo "swagger.ts"
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true

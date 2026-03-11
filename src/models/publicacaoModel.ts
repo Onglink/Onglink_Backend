@@ -1,14 +1,14 @@
-//const mongoose = require('mongoose')
-//const Schema = mongoose.Schema
+const mongoose_publi = require('mongoose')
+const Schema_publi = mongoose_publi.Schema
 
 
 // --- 1. Schema Principal de publicação ---
-const publicacaoSchema = new Schema({
+const publicacaoSchema = new Schema_publi({
     titulo: { type: String, required: true },
     descricao: { type: String, required: true },
     imagem:[{type: String, required: true}],
     criadoPor: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose_publi.Schema.Types.ObjectId,
     ref: 'Usuario',
     required:true
   }
@@ -20,4 +20,4 @@ const publicacaoSchema = new Schema({
     timestamps: true 
 });
 
-module.exports = mongoose.model('Publicacao', publicacaoSchema, 'publicacoes')
+module.exports = mongoose_publi.model('Publicacao', publicacaoSchema, 'publicacoes')

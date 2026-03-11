@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cors = require('cors');
-const express = require('express');
-const app = express();
+const express_server = require('express');
+const app = express_server();
 const port = 4000;
 
 // --- CONFIGURAÇÃO DE CORS (Refatorada) ---
@@ -13,7 +13,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-    origin: function (origin, callback) {
+    origin: function (origin: any, callback: any) {
         // Permite requisições sem 'origin' (ex: Postman, apps mobile) E 
         // requisições da sua whitelist
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
@@ -32,20 +32,20 @@ app.options(/'*'/, cors(corsOptions));
 // ------------------------------------------
 
 // Middleware para parsear JSON
-app.use(express.json());
+app.use(express_server.json());
 
 
-const mongoose = require('mongoose');
+const mongoose_server = require('mongoose');
 
 // Importando middleware e swagger
-const apiKeyAuth = require('./middleware/apiKeyAuth');
+import { apiKeyAuth } from "./src/middleware/apiKeyAuth";
 const swaggerUI = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
 
 // Rota do Swagger (Pública, ANTES da autenticação)
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
-const parceiroRoutes = require('./routes/parceiro');
+import { parceiroRoutes } from "./src/routes/parceiro";
 app.use('/api/parceiros', parceiroRoutes);
 
 // Middleware de autenticação (Protege todas as rotas abaixo)
@@ -53,7 +53,7 @@ app.use(apiKeyAuth);
 
 const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connect(MONGO_URI)
+mongoose_server.connect(MONGO_URI)
     .then(() => {
         console.log('✅ Conexão com MongoDB Atlas estabelecida com sucesso!');
         
@@ -62,16 +62,16 @@ mongoose.connect(MONGO_URI)
             console.log(`🚀 Servidor ONGLINK-DB rodando em http://localhost:${port}`);
         });
     })
-    .catch((err) => {
+    .catch((err:any) => {
         console.error('❌ Erro ao conectar ao MongoDB Atlas:', err.message);
         process.exit(1); 
     });
 
 // Rotas da API
-const ongRoutes = require('./routes/ong');
-const usuarioRoutes = require('./routes/usuario');
-const publicacaoRoutes = require('./routes/publicacao');
-const denunciaRoutes = require('./routes/denuncia');
+import { ongRoutes } from "./src/routes/ong";
+import { usuarioRoutes } from "./src/routes/usuario";
+import { publicacaoRoutes } from "./src/routes/publicacao";
+import { denunciaRoutes } from "./src/routes/denuncia";
 //const shareLinkRoutes = require('./routes/shareLinkRoutes');
 
 

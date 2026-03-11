@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router_ong = express.Router();
 const {
   cadastrarOng: cadastrarOng,
   listarOngs,
@@ -9,10 +9,10 @@ const {
   atualizarStatusOng
 } = require('../controllers/ongController');
 
-router.post('/', cadastrarOng);
-router.get('/', listarOngs);
-router.get('/:id', buscarOngPorId);
-router.put('/:id', atualizarOng);
-router.delete('/:id', deletarOng);
-router.patch('/:id/status', atualizarStatusOng);
-module.exports = router;
+router_ong.post('/', cadastrarOng);
+router_ong.get('/', listarOngs);
+router_ong.get('/:id', buscarOngPorId);
+router_ong.put('/:id', atualizarOng);
+router_ong.delete('/:id', deletarOng);
+router_ong.patch('/:id/status', atualizarStatusOng);
+export const ongRoutes = router_ong;

@@ -1,5 +1,5 @@
-//const express = require('express');
-//const router = express.Router();
+const express = require('express');
+const router_denuncia = express.Router();
 const {
     cadastrarDenuncia,
     listarDenuncia,
@@ -7,9 +7,9 @@ const {
     deletarDenuncia,
 } = require('../controllers/denunciaController');
 
-router.get("/", listarDenuncia);
-router.get("/:id", buscarDenuncia);
-router.post("/", cadastrarDenuncia);
-router.delete("/:id", deletarDenuncia);
+router_denuncia.get("/", listarDenuncia);
+router_denuncia.get("/:id", buscarDenuncia);
+router_denuncia.post("/", cadastrarDenuncia);
+router_denuncia.delete("/:id", deletarDenuncia);
 
-module.exports = router;
+export const denunciaRoutes = router_denuncia;

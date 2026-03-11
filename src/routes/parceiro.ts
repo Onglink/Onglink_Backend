@@ -1,8 +1,8 @@
-//const express = require('express');
-//const router = express.Router();
+const express_parceiro = require('express');
+const router_parceiro = express_parceiro.Router();
 const { listarParceiros } = require('../controllers/parceiroController');
 
 //const { listarOngs} = require('../controllers/ongController');
 
-router.get('/', listarParceiros);
-module.exports = router;
+router_parceiro.get('/', listarParceiros);
+export const parceiroRoutes = router_parceiro;

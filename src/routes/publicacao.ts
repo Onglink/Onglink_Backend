@@ -1,5 +1,5 @@
-//const express = require('express');
-//const router = express.Router();
+const express = require('express');
+const router_publicacao = express.Router();
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -15,10 +15,10 @@ const {
 
 const ROLES_PUBLICADORES = ['admin', 'ong'];
 
-router.post('/', checkRole(ROLES_PUBLICADORES), upload.single('image'), criarPublicacao);
-router.get('/',  buscarPublicacao);
-router.get('/:id', buscarPublicacaoPorId);
-router.put('/:id', checkRole(ROLES_PUBLICADORES), editarPublicacao);
-router.delete('/:id', checkRole(ROLES_PUBLICADORES), excluirPublicacao);
+router_publicacao.post('/', checkRole(ROLES_PUBLICADORES), upload.single('image'), criarPublicacao);
+router_publicacao.get('/',  buscarPublicacao);
+router_publicacao.get('/:id', buscarPublicacaoPorId);
+router_publicacao.put('/:id', checkRole(ROLES_PUBLICADORES), editarPublicacao);
+router_publicacao.delete('/:id', checkRole(ROLES_PUBLICADORES), excluirPublicacao);
 
-module.exports = router;
+export const publicacaoRoutes = router_publicacao;

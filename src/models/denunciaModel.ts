@@ -1,7 +1,7 @@
-//const mongoose = require('mongoose')
-//const Schema = mongoose.Schema
+const mongoose_denuncia = require('mongoose')
+const Schema_denuncia = mongoose_denuncia.Schema
 
-const denunciaSchema = new Schema({
+const denunciaSchema = new Schema_denuncia({
     tipoDenuncia: {
         type: String,
         enum: [
@@ -17,7 +17,7 @@ const denunciaSchema = new Schema({
 
     motivo: { type: String, required: true },
     assignedTo: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_denuncia.Schema.Types.ObjectId,
         ref: 'Publicacao',
         required: true,
     }],
@@ -28,4 +28,4 @@ const denunciaSchema = new Schema({
 
     })
 
-module.exports = mongoose.model("Denuncia", denunciaSchema);
+module.exports = mongoose_denuncia.model("Denuncia", denunciaSchema);
