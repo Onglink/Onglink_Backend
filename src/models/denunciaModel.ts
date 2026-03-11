@@ -1,5 +1,5 @@
-const mongoose_denuncia = require('mongoose')
-const Schema_denuncia = mongoose_denuncia.Schema
+import mongoose, {model} from 'mongoose';
+const Schema_denuncia = mongoose.Schema
 
 const denunciaSchema = new Schema_denuncia({
     tipoDenuncia: {
@@ -17,7 +17,7 @@ const denunciaSchema = new Schema_denuncia({
 
     motivo: { type: String, required: true },
     assignedTo: [{
-        type: mongoose_denuncia.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Publicacao',
         required: true,
     }],
@@ -28,4 +28,5 @@ const denunciaSchema = new Schema_denuncia({
 
     })
 
-module.exports = mongoose_denuncia.model("Denuncia", denunciaSchema);
+const Denuncia = model("Denuncia", denunciaSchema);
+export default Denuncia;

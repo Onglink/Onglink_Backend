@@ -1,7 +1,7 @@
 // middlewares/authMiddleware.js
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 // A mesma chave secreta usada no usuarioController.js
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key'; 
@@ -18,7 +18,7 @@ interface AuthRequest extends Request {
  * @param {Array<string>} rolesPermitidas - Array de status que têm permissão para a rota (ex: ['admin', 'ong']).
  * @returns {Function} O middleware do Express.
  */
-const checkRole = (rolesPermitidas:string) => (req: AuthRequest, res: Response, next: NextFunction) => {
+const checkRole = (rolesPermitidas:string[]) => (req: AuthRequest, res: Response, next: NextFunction) => {
     // 1. Obter o Token do cabeçalho de Autorização (padrão 'Bearer token')
     const authHeader = req.headers.authorization;
     
@@ -55,6 +55,6 @@ const checkRole = (rolesPermitidas:string) => (req: AuthRequest, res: Response, 
     }
 };
 
-module.exports = { 
+export { 
     checkRole 
 };

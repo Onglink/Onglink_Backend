@@ -1,13 +1,13 @@
-const express = require('express');
+import express from "express";
 const router_ong = express.Router();
-const {
-  cadastrarOng: cadastrarOng,
+import {
+  cadastrarOng,
   listarOngs,
   atualizarOng,
   deletarOng,
   buscarOngPorId,
   atualizarStatusOng
-} = require('../controllers/ongController');
+} from '../controllers/ongController.ts';
 
 router_ong.post('/', cadastrarOng);
 router_ong.get('/', listarOngs);

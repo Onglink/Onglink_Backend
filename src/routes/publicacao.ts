@@ -1,17 +1,17 @@
-const express = require('express');
+import express from "express";
 const router_publicacao = express.Router();
-const multer = require('multer');
+import multer from 'multer'
 const upload = multer({ storage: multer.memoryStorage() });
 
-const {checkRole} = require('../middleware/tokenAuth')
+import {checkRole} from '../middleware/tokenAuth.ts';
 
-const {
+import  {
   criarPublicacao,
   buscarPublicacao,
   buscarPublicacaoPorId,
   editarPublicacao,
   excluirPublicacao
-} = require('../controllers/publicacaoController');
+} from '../controllers/publicacaoController.ts';
 
 const ROLES_PUBLICADORES = ['admin', 'ong'];
 

@@ -1,5 +1,8 @@
-const mongoose_ongModel = require('mongoose')
-const Schema_ongModel = mongoose_ongModel.Schema
+import { model } from "mongoose";
+
+import mongoose from "mongoose";
+
+const Schema_ongModel = mongoose.Schema
 
 // --- 1. Sub-Schema para Endereço ---
 const enderecoSchema = new Schema_ongModel({
@@ -54,7 +57,7 @@ const ongSchema = new Schema_ongModel({
         required: true
     },
     assignedTo: [{
-        type: mongoose_ongModel.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
         required: true, // Garante que a ONG tenha pelo menos 1 usuário atribuído ao ser criada
     }],
@@ -73,4 +76,5 @@ const ongSchema = new Schema_ongModel({
 
     });
 
-module.exports = mongoose_ongModel.model('Ong', ongSchema)
+const Ong = model('Ong', ongSchema);
+export default Ong;

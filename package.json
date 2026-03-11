@@ -16,7 +16,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Onglink/onglinkDb/issues"
   },
@@ -24,7 +24,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -39,8 +39,12 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@tsconfig/node24": "^24.0.4",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.1.0",
     "@types/node": "^25.4.0",
+    "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.0.3",
     "eslint-plugin-perfectionist": "^5.6.0",
     "jest": "^30.2.0",

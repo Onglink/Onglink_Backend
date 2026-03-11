@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router_denuncia = express.Router();
-const {
+import {
     cadastrarDenuncia,
     listarDenuncia,
     buscarDenuncia,
     deletarDenuncia,
-} = require('../controllers/denunciaController');
+} from '../controllers/denunciaController.ts';
 
 router_denuncia.get("/", listarDenuncia);
 router_denuncia.get("/:id", buscarDenuncia);

@@ -1,24 +1,18 @@
-import {Request, Response} from 'express';
+import type {Request, Response} from 'express';
+import Publicacao from '../models/publicacaoModel.ts'; 
+import Usuario from '../models/usuarioModel.ts';
+import Ong from '../models/ongModel.ts';// <--- ESSENCIAL: Importar para o populate funcionar
 
-const Publicacao = require('../models/publicacaoModel');
-const Usuario = require('../models/usuarioModel');
-const Ong = require('../models/ongModel'); // <--- ESSENCIAL: Importar para o populate funcionar
 
-interface MulterRequest extends Request {
-    file?: {
-        buffer: Buffer;
-        mimetype: string;
-    };
-}
-
-const criarPublicacao = async (req: MulterRequest, res: Response) => {
+const criarPublicacao = async (req: Request, res: Response) => {
+    const imagem = req.file;
     try {
         const { titulo, descricao, criadoPor } = req.body;
         let imagensArray = [];
         
-        if (req.file) {
-            const b64 = Buffer.from(req.file.buffer).toString('base64');
-            const dataURI = `data:${req.file.mimetype};base64,${b64}`;
+        if (imagem) {
+            const b64 = Buffer.from(imagem.buffer).toString('base64');
+            const dataURI = `data:${imagem.mimetype};base64,${b64}`;
             imagensArray.push(dataURI);
         }
 
@@ -115,7 +109,7 @@ const excluirPublicacao = async (req: Request, res: Response) => {
     }
 };
 
-module.exports = {
+export {
     criarPublicacao,
     buscarPublicacao,
     buscarPublicacaoPorId,

@@ -1,15 +1,15 @@
 // novo router:
-const express = require('express');
+import express from "express";
 const router_usuario = express.Router();
 
-const {
+import {
     cadastrarUsuario,
     listarUsuarios,
     buscarUsuarioPorId,
     atualizarUsuario,
     deletarUsuario,
     loginUsuario, 
-} = require('../controllers/usuarioController'); 
+} from '../controllers/usuarioController.ts'; 
 
 router_usuario.post('/login', loginUsuario);
 router_usuario.post('/cadastro', cadastrarUsuario);
