@@ -32,7 +32,7 @@ const checkRole = (rolesPermitidas:string[]) => (req: AuthRequest, res: Response
 
     try {
         // 2. Verificar a validade e a assinatura do Token
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = jwt.verify(token, JWT_SECRET) as DecodedUser;
         
         // O payload decodificado agora está em 'decoded' e contém { id, status }
         req.user = decoded; // Adiciona o usuário decodificado ao objeto de requisição
