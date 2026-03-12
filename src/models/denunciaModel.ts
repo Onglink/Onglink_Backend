@@ -1,7 +1,7 @@
-//const mongoose = require('mongoose')
-//const Schema = mongoose.Schema
+import mongoose, {model} from 'mongoose';
+const Schema_denuncia = mongoose.Schema
 
-const denunciaSchema = new Schema({
+const denunciaSchema = new Schema_denuncia({
     tipoDenuncia: {
         type: String,
         enum: [
@@ -28,4 +28,5 @@ const denunciaSchema = new Schema({
 
     })
 
-module.exports = mongoose.model("Denuncia", denunciaSchema);
+const Denuncia = model("Denuncia", denunciaSchema);
+export default Denuncia;

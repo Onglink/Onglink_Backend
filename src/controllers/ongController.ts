@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-const Ong = require('../models/ongModel');
-const Usuario = require('../models/usuarioModel');
+import type { Request, Response } from 'express';
+import Ong from '../models/ongModel.ts';
+import Usuario from '../models/usuarioModel.ts';
 
 
 const cadastrarOng = async (req: Request, res: Response) => {
@@ -145,7 +145,7 @@ const deletarOng = async (req: Request, res: Response) => {
     }
 };
 
-module.exports = {
+export {
     cadastrarOng,
     listarOngs,
     atualizarOng,
