@@ -1,6 +1,6 @@
 // models/SharedLink.js
 
-//const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Define o esquema do documento que será salvo no MongoDB
 const sharedLinkSchema = new mongoose.Schema({
