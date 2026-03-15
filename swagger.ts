@@ -26,10 +26,10 @@ const doc = {
 
 const outputFile = './swagger-output.json';
 const endpointsFiles = [
-    './routes/denuncia.js',
-    './routes/ong.js', 
-    './routes/publicacao.js', 
-    './routes/usuario.js',
+    './routes/denuncia.ts',
+    './routes/ong.ts', 
+    './routes/publicacao.ts', 
+    './routes/usuario.ts',
     
 ]
 

@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-const Usuario = require("../models/usuarioModel");
+import type { Request, Response } from 'express';
+import Usuario from '../models/usuarioModel.ts';
 // const bcrypt = require('bcrypt'); // REMOVIDO PARA TESTE
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 // --- CADASTRO (SALVA SENHA EM TEXTO PURO - APENAS TESTE) ---
 const cadastrarUsuario = async (req: Request, res: Response) => {
@@ -69,12 +69,12 @@ const loginUsuario = async (req: Request, res: Response) => {
     // Gera Token JWT
     const token = jwt.sign(
       { id: usuario._id, email: usuario.email, role: usuario.status },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET as string,
       { expiresIn: "8h" }
     );
 
     // Remove a senha antes de enviar a resposta
-    usuario.senha = undefined;
+    usuario.senha = '';
 
     res.status(200).json({
       message: "Login realizado com sucesso!",
@@ -171,7 +171,7 @@ const deletarUsuario = async (req: Request, res: Response) => {
   }
 };
 
-module.exports = {
+export {
   cadastrarUsuario,
   listarUsuarios,
   buscarUsuarioPorId,

@@ -1,8 +1,8 @@
 // parceiroController.js - CÓDIGO FINAL COM PROJEÇÃO COMPLETA PARA O MODAL
-import { Request, Response } from 'express';
-const Ong = require('../models/ongModel');
+import type { Request, Response } from 'express';
+import Ong from '../models/ongModel.ts';
 
-const listarParceiros = async (req: Request, res: Response) => {
+export const listarParceiros = async (req: Request, res: Response) => {
     try {
         const lista = await Ong.find({
             // 1. FILTRO: Apenas aprovados
@@ -33,6 +33,6 @@ const listarParceiros = async (req: Request, res: Response) => {
     }
 };
 
-module.exports = {
+export const listar = {
     listarParceiros,
 };

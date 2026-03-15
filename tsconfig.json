@@ -45,13 +45,18 @@
 {
   "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "NodeNext",
     "outDir": "./dist",
-    "rootDir": "./src",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "rootDir": "./", // Alterado de "./src" para "./" para incluir o arquivo "swagger.ts"
+    "resolveJsonModule": true,    /* Permite importar .json */
+    "esModuleInterop": true,      /* Melhora compatibilidade */
+    "moduleResolution": "NodeNext",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
+
   },
+  
   "include": ["**/*.ts", "src/models/usuarioModel.js"],
   "exclude": ["dist"]
 }
