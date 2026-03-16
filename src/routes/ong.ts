@@ -7,7 +7,7 @@ import {
   deletarOng,
   buscarOngPorId,
   atualizarStatusOng
-} from '../controllers/ongController.ts';
+} from '../controllers/ongController';
 
 router_ong.post('/', cadastrarOng);
 router_ong.get('/', listarOngs);

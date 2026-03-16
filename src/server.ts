@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import express from 'express';
 const app = express();
 const port = 4000;
@@ -12,11 +12,11 @@ const allowedOrigins = [
     'http://localhost:4000'         // URL de desenvolvimento local (Next.js)
 ];
 
-const corsOptions = {
-    origin: function (origin: any, callback: any) {
+const corsOptions: CorsOptions = {
+    origin: function (origin, callback) {
         // Permite requisições sem 'origin' (ex: Postman, apps mobile) E 
         // requisições da sua whitelist
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Acesso não permitido pela política de CORS'));
@@ -38,14 +38,17 @@ app.use(express.json());
 import mongoose from 'mongoose';
 
 // Importando middleware e swagger
-import { apiKeyAuth } from "./src/middleware/apiKeyAuth.ts";
+import { apiKeyAuth } from "./middleware/apiKeyAuth";
 import swaggerUI from 'swagger-ui-express';
-import swaggerFile from './swagger-output.json' with { type: 'json' };
+// 
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const swaggerFile = require('../swagger-output.json');
 
 // Rota do Swagger (Pública, ANTES da autenticação)
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
-import { parceiroRoutes } from "./src/routes/parceiro.ts";
+import { parceiroRoutes } from "./routes/parceiro";
 app.use('/api/parceiros', parceiroRoutes);
 
 // Middleware de autenticação (Protege todas as rotas abaixo)
@@ -62,17 +65,17 @@ mongoose.connect(MONGO_URI)
             console.log(`🚀 Servidor ONGLINK-DB rodando em http://localhost:${port}`);
         });
     })
-    .catch((err:any) => {
+    .catch((err) => {
         console.error('❌ Erro ao conectar ao MongoDB Atlas:', err.message);
         process.exit(1); 
     });
 
 // Rotas da API
-import { ongRoutes } from "./src/routes/ong.ts";
-import { usuarioRoutes } from "./src/routes/usuario.ts";
-import { publicacaoRoutes } from "./src/routes/publicacao.ts";
-import { denunciaRoutes } from "./src/routes/denuncia.ts";
-import { assert } from 'node:console';
+import { ongRoutes } from "./routes/ong";
+import { usuarioRoutes } from "./routes/usuario";
+import { publicacaoRoutes } from "./routes/publicacao";
+import { denunciaRoutes } from "./routes/denuncia";
+//import { assert } from 'node:console';
 //const shareLinkRoutes = require('./routes/shareLinkRoutes');
 
 

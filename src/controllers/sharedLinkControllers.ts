@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-const SharedLink = require('../models/shareLinkModel');
-const crypto = require('crypto'); // Biblioteca nativa do Node (Zero risco)
+import crypto from 'crypto';
+import  SharedLink  from '../models/shareLinkModel';
+
+ // Biblioteca nativa do Node (Zero risco)
 
 const generateShareLink = async (req: Request, res: Response) => {
   try {
@@ -26,3 +28,5 @@ const generateShareLink = async (req: Request, res: Response) => {
 };
 
 module.exports = { generateShareLink };
+
+  export default generateShareLink;

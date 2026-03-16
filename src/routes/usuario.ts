@@ -9,7 +9,7 @@ import {
     atualizarUsuario,
     deletarUsuario,
     loginUsuario, 
-} from '../controllers/usuarioController.ts'; 
+} from '../controllers/usuarioController'; 
 
 router_usuario.post('/login', loginUsuario);
 router_usuario.post('/cadastro', cadastrarUsuario);

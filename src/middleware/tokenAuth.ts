@@ -50,8 +50,9 @@ const checkRole = (rolesPermitidas:string[]) => (req: AuthRequest, res: Response
         next();
 
     } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Erro ao verificar token";
         // Erro na verificação (token expirado, inválido, etc.)
-        res.status(401).json({ message: 'Token inválido ou expirado. Faça o login novamente.' });
+        res.status(401).json({ error:"Erro ao verificar token", details: errorMessage });
     }
 };
 
