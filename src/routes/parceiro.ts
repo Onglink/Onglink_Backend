@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import {listarParceiros} from "../controllers/parceiroController.ts";
+import {listarParceiros} from "../controllers/parceiroController";
 const router_parceiro: Router = express.Router();
 
 //const { listarOngs} = require('../controllers/ongController');

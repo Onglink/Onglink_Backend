@@ -1,14 +1,14 @@
 import type {Request, Response} from 'express';
-import Publicacao from '../models/publicacaoModel.ts'; 
-import Usuario from '../models/usuarioModel.ts';
-import Ong from '../models/ongModel.ts';// <--- ESSENCIAL: Importar para o populate funcionar
+import Publicacao from '../models/publicacaoModel'; 
+//import Usuario from '..usuarioModel.ts';
+//import Ong from '../models/ongModel.ts';// <--- ESSENCIAL: Importar para o populate funcionar
 
 
 const criarPublicacao = async (req: Request, res: Response) => {
     const imagem = req.file;
     try {
         const { titulo, descricao, criadoPor } = req.body;
-        let imagensArray = [];
+        const imagensArray = [];
         
         if (imagem) {
             const b64 = Buffer.from(imagem.buffer).toString('base64');

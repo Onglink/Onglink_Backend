@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import Usuario from '../models/usuarioModel.ts';
+import Usuario from '../models/usuarioModel';
 // const bcrypt = require('bcrypt'); // REMOVIDO PARA TESTE
 import jwt from "jsonwebtoken";
 
@@ -27,9 +27,9 @@ const cadastrarUsuario = async (req: Request, res: Response) => {
       message: "Usuário cadastrado com sucesso!",
       id: novoUsuario._id,
     });
-  } catch (err: any) {
+  } catch (err) {
     const errorMessage = err instanceof Error ? err.message : "Erro ao cadastrar usuário";
-    if (err.code === 11000) {
+    if (err === 11000) {
       return res.status(400).json({
         error: "Email ou CPF já cadastrado.",
         details: errorMessage,

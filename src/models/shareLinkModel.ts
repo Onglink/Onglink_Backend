@@ -15,4 +15,6 @@ const sharedLinkSchema = new mongoose.Schema({
 });
 
 // Exporta o modelo para ser usado em outras partes do projeto
-module.exports = mongoose.model('SharedLink', sharedLinkSchema);
+
+const SharedLink = mongoose.model('SharedLink', sharedLinkSchema);
+export default SharedLink;
