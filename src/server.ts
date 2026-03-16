@@ -86,7 +86,7 @@ app.use('/api/denuncia', denunciaRoutes);
 app.use('/api/parceiros', parceiroRoutes);
 //app.use('/api/share-link', shareLinkRoutes);
 
-
+// comentário
 
 // Configuração do CORS
 //app.use(cors({
