@@ -1,8 +1,11 @@
-//const mongoose = require('mongoose')
-//const Schema = mongoose.Schema
+import { model } from "mongoose";
+
+import mongoose from "mongoose";
+
+const Schema_ongModel = mongoose.Schema
 
 // --- 1. Sub-Schema para Endereço ---
-const enderecoSchema = new Schema({
+const enderecoSchema = new Schema_ongModel({
     numeroEnd: { type: String, required: true },
     complemento: { type: String },
     bairro: { type: String, required: true },
@@ -17,14 +20,14 @@ const enderecoSchema = new Schema({
 }, { _id: false, strict: true }); // Adicionado strict: true para subdocumento
 
 // --- 2. Sub-Schema para Redes Sociais ---
-const redeSocialSchema = new Schema({
+const redeSocialSchema = new Schema_ongModel({
     instagram: { type: String, required: true },
     facebook: { type: String, required: true },
     site: { type: String, required: true }
 }, { _id: false, strict: true });
 
 // --- 3. Schema Principal da ONG ---
-const ongSchema = new Schema({
+const ongSchema = new Schema_ongModel({
 
     razaoSocial: { type: String, required: true },
     nomeFantasia: { type: String, required: true },
@@ -73,4 +76,5 @@ const ongSchema = new Schema({
 
     });
 
-module.exports = mongoose.model('Ong', ongSchema)
+const Ong = model('Ong', ongSchema);
+export default Ong;

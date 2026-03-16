@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-module.exports = function(req: Request, res: Response, next: NextFunction){
+import type { Request, Response, NextFunction } from 'express';
+export const apiKeyAuth = (req: Request, res: Response, next: NextFunction) => {
     const key = req.headers['x-api-key']
 
     if(!key || key != process.env.API_KEY){

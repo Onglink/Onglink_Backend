@@ -1,6 +1,6 @@
-require('dotenv').config();
-const cors = require('cors');
-const express = require('express');
+import 'dotenv/config';
+import cors, { CorsOptions } from 'cors';
+import express from 'express';
 const app = express();
 const port = 4000;
 
@@ -12,11 +12,11 @@ const allowedOrigins = [
     'http://localhost:4000'         // URL de desenvolvimento local (Next.js)
 ];
 
-const corsOptions = {
+const corsOptions: CorsOptions = {
     origin: function (origin, callback) {
         // Permite requisições sem 'origin' (ex: Postman, apps mobile) E 
         // requisições da sua whitelist
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Acesso não permitido pela política de CORS'));
@@ -35,23 +35,26 @@ app.options(/'*'/, cors(corsOptions));
 app.use(express.json());
 
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Importando middleware e swagger
-const apiKeyAuth = require('./middleware/apiKeyAuth');
-const swaggerUI = require('swagger-ui-express');
-const swaggerFile = require('./swagger-output.json');
+import { apiKeyAuth } from "./middleware/apiKeyAuth";
+import swaggerUI from 'swagger-ui-express';
+// 
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const swaggerFile = require('../swagger-output.json');
 
 // Rota do Swagger (Pública, ANTES da autenticação)
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
-const parceiroRoutes = require('./routes/parceiro');
+import { parceiroRoutes } from "./routes/parceiro";
 app.use('/api/parceiros', parceiroRoutes);
 
 // Middleware de autenticação (Protege todas as rotas abaixo)
 app.use(apiKeyAuth);
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI as string;
 
 mongoose.connect(MONGO_URI)
     .then(() => {
@@ -68,10 +71,11 @@ mongoose.connect(MONGO_URI)
     });
 
 // Rotas da API
-const ongRoutes = require('./routes/ong');
-const usuarioRoutes = require('./routes/usuario');
-const publicacaoRoutes = require('./routes/publicacao');
-const denunciaRoutes = require('./routes/denuncia');
+import { ongRoutes } from "./routes/ong";
+import { usuarioRoutes } from "./routes/usuario";
+import { publicacaoRoutes } from "./routes/publicacao";
+import { denunciaRoutes } from "./routes/denuncia";
+//import { assert } from 'node:console';
 //const shareLinkRoutes = require('./routes/shareLinkRoutes');
 
 
@@ -82,7 +86,7 @@ app.use('/api/denuncia', denunciaRoutes);
 app.use('/api/parceiros', parceiroRoutes);
 //app.use('/api/share-link', shareLinkRoutes);
 
-
+// comentário
 
 // Configuração do CORS
 //app.use(cors({

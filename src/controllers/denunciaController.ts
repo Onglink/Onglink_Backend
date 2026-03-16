@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-const Publicacao = require("../models/publicacaoModel");
-const Denuncia = require("../models/denunciaModel");
+import type { Request, Response } from "express";
+//import Publicacao from "../models/publicacaoModel.ts";
+import Denuncia from "../models/denunciaModel";
 
 const cadastrarDenuncia = async (req: Request, res: Response) => {
     try {
@@ -72,7 +72,7 @@ const deletarDenuncia = async (req: Request, res: Response) => {
     }
 };
 
-module.exports = {
+export {
     cadastrarDenuncia,
     listarDenuncia,
     buscarDenuncia,

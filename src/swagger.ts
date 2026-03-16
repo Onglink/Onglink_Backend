@@ -1,6 +1,6 @@
-const apiKeyAuth = require('./middleware/apiKeyAuth');
 
-const swaggerAutogen = require('swagger-autogen')();
+import swaggerAutogen from "swagger-autogen";
+//import { apiKeyAuth } from "./middleware/apiKeyAuth.ts";
 
 const doc = {
     info: {
@@ -26,10 +26,10 @@ const doc = {
 
 const outputFile = './swagger-output.json';
 const endpointsFiles = [
-    './routes/denuncia.js',
-    './routes/ong.js', 
-    './routes/publicacao.js', 
-    './routes/usuario.js',
+    './routes/denuncia.ts',
+    './routes/ong.ts', 
+    './routes/publicacao.ts', 
+    './routes/usuario.ts',
     
 ]
 
