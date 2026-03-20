@@ -1,7 +1,9 @@
 import { jest, describe, test, expect, beforeEach } from '@jest/globals';
-import usuarioController from "../usuarioController.js"; // Adicione o .js no final
-import usuarioModel from "../../models/usuarioModel.js"; // Adicione o .js no final
+//import usuarioController from "../usuarioController.js"; // Adicione o .js no final
+//import usuarioModel from "../../models/usuarioModel.js"; // Adicione o .js no final
 
+const usuarioController = require('../usuarioController');
+const usuarioModel = require('../../models/usuarioModel');
 // Mock do modelo para evitar que o Jest tente ler o banco de dados real
 jest.mock('../../models/usuarioModel.js'); 
 
