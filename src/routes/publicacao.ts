@@ -23,4 +23,4 @@ router_publicacao.delete('/:id', checkRole(ROLES_PUBLICADORES), excluirPublicaca
 
 export const publicacaoRoutes = router_publicacao;
 
-//comentario para teste de versionamento.
+//comentario para teste de versionamento
