@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   testEnvironment: 'node',
 
   // A lista de caminhos onde o Jest deve procurar por arquivos de teste:
