@@ -22,3 +22,5 @@ router_publicacao.put('/:id', checkRole(ROLES_PUBLICADORES), editarPublicacao);
 router_publicacao.delete('/:id', checkRole(ROLES_PUBLICADORES), excluirPublicacao);
 
 export const publicacaoRoutes = router_publicacao;
+
+//comentario para teste de versionamento
