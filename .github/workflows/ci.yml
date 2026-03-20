@@ -40,7 +40,7 @@ jobs:
       - name: Criar nova tag caso não exista
         id: create_initial_tag
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN  }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           if [ -z "$(git tag)" ]; then
             git config --global user.name 'github-actions'
@@ -93,7 +93,7 @@ jobs:
 
       - name: Commit e push
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN  }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
@@ -110,9 +110,9 @@ jobs:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "❌ Github Actions job result: Falha"
-          to: ${{ secrets.MAIL_DESTINATARIO }}
-          from: "Fatec Votorantim - Github Actions"
+          username: ${{ secrets.MAIL_ORIGEM }}
+          password: ${{ secrets.SENHA_EMAIL }}
+          subject: "Falha no workflow do GitHub Actions"
+          to: ${{ secrets.MAIL_DESTINO }}
+          from: "${{ secrets.MAIL_DESTINO}} - Github Actions"
           body: "Ocorreu uma FALHA no build do repositorio ${{ github.repository }}! Verifique o log do Github Actions para corrigir o erro."
