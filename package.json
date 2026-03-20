@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules --loader ts-node/esm node_modules/jest/bin/jest.js",
     "start": "node --loader ts-node/esm src/server.ts",
   "dev": "nodemon --exec node --loader ts-node/esm src/server.ts",
     "build": "tsc --build"
