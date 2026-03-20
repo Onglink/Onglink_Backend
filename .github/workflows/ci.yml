@@ -110,7 +110,7 @@ jobs:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
-          username: ${{ secrets.MAIL_ORIGEM }}
+          username: ${{ secrets.EMAIL_ORIGEM }}
           password: ${{ secrets.SENHA_EMAIL }}
           subject: "Falha no workflow do GitHub Actions"
           to: ${{ secrets.MAIL_DESTINO }}
