@@ -1,61 +1,11 @@
 import 'dotenv/config';
-import cors, { CorsOptions } from 'cors';
-import express from 'express';
-const app = express();
-const port = 4000;
-
-// --- CONFIGURAÇÃO DE CORS (Refatorada) ---
-// Lista de origens permitidas
-const allowedOrigins = [
-    'https://onglink.vercel.app', // URL de produção do seu Front-end
-    'http://localhost:3000',
-    'http://localhost:4000'         // URL de desenvolvimento local (Next.js)
-];
-
-const corsOptions: CorsOptions = {
-    origin: function (origin, callback) {
-        // Permite requisições sem 'origin' (ex: Postman, apps mobile) E 
-        // requisições da sua whitelist
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Acesso não permitido pela política de CORS'));
-        }
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-};
-
-// Aplica as opções de CORS ANTES de todas as outras rotas
-app.use(cors(corsOptions));
-app.options(/'*'/, cors(corsOptions));
-// ------------------------------------------
-
-// Middleware para parsear JSON
-app.use(express.json());
-
-
 import mongoose from 'mongoose';
+import app from './app'; 
 
-// Importando middleware e swagger
-import { apiKeyAuth } from "./middleware/apiKeyAuth";
-import swaggerUI from 'swagger-ui-express';
-// 
-import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
-const swaggerFile = require('../swagger-output.json');
-
-// Rota do Swagger (Pública, ANTES da autenticação)
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
-
-import { parceiroRoutes } from "./routes/parceiro";
-app.use('/api/parceiros', parceiroRoutes);
-
-// Middleware de autenticação (Protege todas as rotas abaixo)
-app.use(apiKeyAuth);
-
+const port = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI as string;
 
+// Conexão com o Banco de Dados e Inicialização do Servidor
 mongoose.connect(MONGO_URI)
     .then(() => {
         console.log('✅ Conexão com MongoDB Atlas estabelecida com sucesso!');
@@ -69,28 +19,3 @@ mongoose.connect(MONGO_URI)
         console.error('❌ Erro ao conectar ao MongoDB Atlas:', err.message);
         process.exit(1); 
     });
-
-// Rotas da API
-import { ongRoutes } from "./routes/ong";
-import { usuarioRoutes } from "./routes/usuario";
-import { publicacaoRoutes } from "./routes/publicacao";
-import { denunciaRoutes } from "./routes/denuncia";
-//import { assert } from 'node:console';
-//const shareLinkRoutes = require('./routes/shareLinkRoutes');
-
-
-app.use('/api/ongs', ongRoutes);
-app.use('/api/usuarios', usuarioRoutes);
-app.use('/api/publicacoes', publicacaoRoutes);
-app.use('/api/denuncia', denunciaRoutes);
-app.use('/api/parceiros', parceiroRoutes);
-//app.use('/api/share-link', shareLinkRoutes);
-
-// comentário
-
-// Configuração do CORS
-//app.use(cors({
-//origin: allowedOrigins,
-  //methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Permite todos os métodos que você usa
-  //credentials: true, // Importante se você usa cookies ou sessões
-//}));
