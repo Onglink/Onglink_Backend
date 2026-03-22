@@ -1,0 +1,19 @@
+
+{
+  "extends": "@tsconfig/node24/tsconfig.json",
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": ["node", "jest"],
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+  },
+  "include": ["src**/*.ts"],
+  "exclude": ["dist"]
+}

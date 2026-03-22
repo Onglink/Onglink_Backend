@@ -1,7 +1,7 @@
 import express from 'express';
 import cors, { CorsOptions } from 'cors';
 import swaggerUI from 'swagger-ui-express';
-import { createRequire } from 'node:module';
+// import { createRequire } from 'node:module';
 
 // Importação de Middlewares e Rotas
 import { apiKeyAuth } from "./middleware/apiKeyAuth";
@@ -11,8 +11,9 @@ import { publicacaoRoutes } from "./routes/publicacao";
 import { denunciaRoutes } from "./routes/denuncia";
 import { parceiroRoutes } from "./routes/parceiro";
 
-const require = createRequire(import.meta.url);
-const swaggerFile = require('../swagger-output.json');
+import swaggerFile from '../swagger-output.json';
+// const require = createRequire(import.meta.url);
+// const swaggerFile = require('../swagger-output.json');
 
 const app = express();
 
@@ -36,7 +37,7 @@ const corsOptions: CorsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Sintaxe corrigida para capturar o preflight
+//app.options('/(.*)', cors(corsOptions)); // Sintaxe corrigida para capturar o preflight
 
 // Middleware para parsear JSON
 app.use(express.json());
