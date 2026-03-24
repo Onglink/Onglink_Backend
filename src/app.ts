@@ -10,8 +10,9 @@ import { usuarioRoutes } from "./routes/usuario";
 import { publicacaoRoutes } from "./routes/publicacao";
 import { denunciaRoutes } from "./routes/denuncia";
 import { parceiroRoutes } from "./routes/parceiro";
+import { geminiRoutes } from "./routes/geminiRoutes";
 
-import swaggerFile from '../swagger-output.json';
+import swaggerFile from '../swagger-output.json' with { type: 'json'};
 // const require = createRequire(import.meta.url);
 // const swaggerFile = require('../swagger-output.json');
 
@@ -54,7 +55,8 @@ app.use('/api/ongs', ongRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/publicacoes', publicacaoRoutes);
 app.use('/api/denuncia', denunciaRoutes);
-app.use('/api/parceiros', parceiroRoutes); // Rota duplicada foi unificada aqui
+app.use('/api/parceiros', parceiroRoutes);
+app.use('/api/gemini', geminiRoutes); // Rota duplicada foi unificada aqui
 //app.use('/api/share-link', shareLinkRoutes);
 
 // Exporta o app configurado para ser usado no server.ts

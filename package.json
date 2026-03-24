@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests",
     "start": "node --loader ts-node/esm src/server.ts",
-    "dev": "nodemon --exec node --loader ts-node/esm src/server.ts",
+    "dev": "nodemon --exec node --loader ts-node/esm src/app.ts",
     "build": "tsc --build"
   },
   "repository": {
@@ -22,14 +22,15 @@
   },
   "homepage": "https://github.com/Onglink/onglinkDb#readme",
   "dependencies": {
+    "@google/genai": "^1.46.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.20.0",
-    "mongoose": "^8.19.2",
+    "mongodb": "^7.1.0",
+    "mongoose": "^9.3.2",
     "multer": "^2.0.2",
     "nanoid": "^3.0.0",
     "swagger": "^0.7.5",
