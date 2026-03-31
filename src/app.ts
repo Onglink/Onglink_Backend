@@ -38,13 +38,17 @@ const corsOptions: CorsOptions = {
 };
 
 app.use(cors(corsOptions));
-//app.options('/(.*)', cors(corsOptions)); // Sintaxe corrigida para capturar o preflight
+app.options(/(.*)/, cors(corsOptions)); // Sintaxe corrigida para capturar o preflight
 
 // Middleware para parsear JSON
 app.use(express.json());
 
 // --- ROTAS PÚBLICAS ---
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
+
+
+app.use('/api/gemini', geminiRoutes);
+
 
 // --- MIDDLEWARE DE AUTENTICAÇÃO ---
 // Protege todas as rotas abaixo
@@ -56,7 +60,7 @@ app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/publicacoes', publicacaoRoutes);
 app.use('/api/denuncia', denunciaRoutes);
 app.use('/api/parceiros', parceiroRoutes);
-app.use('/api/gemini', geminiRoutes); // Rota duplicada foi unificada aqui
+ // Rota duplicada foi unificada aqui
 //app.use('/api/share-link', shareLinkRoutes);
 
 // Exporta o app configurado para ser usado no server.ts
