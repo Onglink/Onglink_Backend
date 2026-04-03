@@ -23,6 +23,8 @@
   "homepage": "https://github.com/Onglink/onglinkDb#readme",
   "dependencies": {
     "@google/genai": "^1.46.0",
+    "@logtail/node": "^0.5.8",
+    "@logtail/winston": "^0.5.8",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.6",

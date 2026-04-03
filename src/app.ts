@@ -13,6 +13,8 @@ import { parceiroRoutes } from "./routes/parceiro";
 import { geminiRoutes } from "./routes/geminiRoutes";
 
 import swaggerFile from '../swagger-output.json' with { type: 'json'};
+
+import {loggerMiddleware} from './middleware/loggerMiddleware';
 // const require = createRequire(import.meta.url);
 // const swaggerFile = require('../swagger-output.json');
 
@@ -42,6 +44,9 @@ app.options(/(.*)/, cors(corsOptions)); // Sintaxe corrigida para capturar o pre
 
 // Middleware para parsear JSON
 app.use(express.json());
+
+//middlerware de log
+app.use(loggerMiddleware);
 
 // --- ROTAS PÚBLICAS ---
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
