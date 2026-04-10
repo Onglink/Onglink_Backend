@@ -14,6 +14,9 @@ import { geminiRoutes } from "./routes/geminiRoutes";
 
 import swaggerFile from '../swagger-output.json' with { type: 'json'};
 
+import { Request, Response, NextFunction } from 'express'; // se já não tiver importado
+import { logger } from './logger/logger-winston';
+
 import {loggerMiddleware} from './middleware/loggerMiddleware';
 // const require = createRequire(import.meta.url);
 // const swaggerFile = require('../swagger-output.json');
@@ -67,6 +70,15 @@ app.use('/api/denuncia', denunciaRoutes);
 app.use('/api/parceiros', parceiroRoutes);
  // Rota duplicada foi unificada aqui
 //app.use('/api/share-link', shareLinkRoutes);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    logger.error(`[ERRO NÃO TRATADO] ${req.method} ${req.originalUrl}`, {
+        erro_mensagem: err.message,
+        stack: err.stack,
+        body: req.body
+    });
 
+    res.status(500).json({ erro: "Erro interno do servidor" });
+});
 // Exporta o app configurado para ser usado no server.ts
 export default app;

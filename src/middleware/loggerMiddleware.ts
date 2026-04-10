@@ -1,21 +1,33 @@
-import { Request, Response, NextFunction } from 'express';
+import {Request, Response, NextFunction} from 'express';
 import {logger} from '../logger/logger-winston';
 
- export const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const start= Date.now();
-    res.on('finish', () => {
-        const duration = Date.now() - start;
-        const logData = {
-            metodo: req.method,
+export const loggerMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    const logData = {
+      metodo: req.method,
       rota: req.originalUrl,
       status: res.statusCode,
       duracao_ms: duration,
       ip: req.ip,
-      userAgent: req.get('user-agent') // Navegador/App que fez a requisição
+      userAgent: req.get('user-agent'), // Navegador/App que fez a requisição
+      origin: req.get('origin'), 
+      headers: req.headers, 
+      body: req.body, 
+      params: req.params,
+      query: req.query
     };
     // Decide o nível do log baseado no status HTTP
     if (res.statusCode >= 500) {
-      logger.error(`[${req.method}] ${req.originalUrl} - ERRO SERVIDOR`, logData);
+      logger.error(
+        `[${req.method}] ${req.originalUrl} - ERRO SERVIDOR`,
+        logData,
+      );
     } else if (res.statusCode >= 400) {
       logger.warn(`[${req.method}] ${req.originalUrl} - ERRO CLIENTE`, logData);
     } else {
@@ -24,7 +36,5 @@ import {logger} from '../logger/logger-winston';
   });
 
   // O next() é OBRIGATÓRIO. Ele manda a requisição seguir em frente para a rota.
-  next(); 
+  next();
 };
-
-
