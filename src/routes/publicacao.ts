@@ -3,7 +3,7 @@ const router_publicacao = express.Router();
 import multer from 'multer'
 const upload = multer({ storage: multer.memoryStorage() });
 
-import {checkRole} from '../middleware/tokenAuth';
+import {checkRole} from '../middleware/tokenAuth.js';
 
 import  {
   criarPublicacao,
@@ -11,7 +11,7 @@ import  {
   buscarPublicacaoPorId,
   editarPublicacao,
   excluirPublicacao
-} from '../controllers/publicacaoController';
+} from '../controllers/publicacaoController.js';
 
 const ROLES_PUBLICADORES = ['admin', 'ong'];
 

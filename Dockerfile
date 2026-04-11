@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+WORKDIR /app.js
 
 # Define ambiente como produção
 ENV NODE_ENV=production
@@ -54,5 +54,9 @@ COPY --from=builder /app/dist ./dist
 # Expõe a porta
 EXPOSE 4000
 
+# Garante que o arquivo do swagger esteja disponível onde o código o procura
+COPY swagger-output.json ./
+
 # Comando para iniciar a aplicação usando o código compilado
-CMD ["node", "dist/server.js"]
+# (a flag experimental serve para evitar erro de importações sem extensão ao criar o container)
+CMD ["node", "--experimental-specifier-resolution=node", "dist/server.js"]

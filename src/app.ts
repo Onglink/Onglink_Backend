@@ -4,14 +4,14 @@ import swaggerUI from 'swagger-ui-express';
 // import { createRequire } from 'node:module';
 
 // Importação de Middlewares e Rotas
-import { apiKeyAuth } from "./middleware/apiKeyAuth";
-import { ongRoutes } from "./routes/ong";
-import { usuarioRoutes } from "./routes/usuario";
-import { publicacaoRoutes } from "./routes/publicacao";
-import { denunciaRoutes } from "./routes/denuncia";
-import { parceiroRoutes } from "./routes/parceiro";
+import { apiKeyAuth } from "./middleware/apiKeyAuth.js";
+import { ongRoutes } from "./routes/ong.js";
+import { usuarioRoutes } from "./routes/usuario.js";
+import { publicacaoRoutes } from "./routes/publicacao.js";
+import { denunciaRoutes } from "./routes/denuncia.js";
+import { parceiroRoutes } from "./routes/parceiro.js";
 
-import swaggerFile from '../swagger-output.json';
+import swaggerFile from '../swagger-output.json' with { type: 'json' }
 // const require = createRequire(import.meta.url);
 // const swaggerFile = require('../swagger-output.json');
 

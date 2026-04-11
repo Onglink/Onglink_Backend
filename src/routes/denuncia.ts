@@ -5,7 +5,7 @@ import {
     listarDenuncia,
     buscarDenuncia,
     deletarDenuncia,
-} from '../controllers/denunciaController';
+} from '../controllers/denunciaController.js';
 
 router_denuncia.get("/", listarDenuncia);
 router_denuncia.get("/:id", buscarDenuncia);

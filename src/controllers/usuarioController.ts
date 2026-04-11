@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import Usuario from '../models/usuarioModel';
+import Usuario from '../models/usuarioModel.js';
 // const bcrypt = require('bcrypt'); // REMOVIDO PARA TESTE
 import jwt from "jsonwebtoken";
 
