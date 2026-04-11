@@ -1,6 +1,8 @@
 import express from 'express';
 import cors, { CorsOptions } from 'cors';
 import swaggerUI from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
 // import { createRequire } from 'node:module';
 
 // Importação de Middlewares e Rotas
@@ -12,7 +14,7 @@ import { denunciaRoutes } from "./routes/denuncia";
 import { parceiroRoutes } from "./routes/parceiro";
 import { geminiRoutes } from "./routes/geminiRoutes";
 
-import swaggerFile from '../swagger-output.json' with { type: 'json'};
+//import swaggerFile from '../swagger-output.json' with { type: 'json'};
 
 import { Request, Response, NextFunction } from 'express'; // se já não tiver importado
 import { logger } from './logger/logger-winston';
@@ -20,6 +22,14 @@ import { logger } from './logger/logger-winston';
 import {loggerMiddleware} from './middleware/loggerMiddleware';
 // const require = createRequire(import.meta.url);
 // const swaggerFile = require('../swagger-output.json');
+
+// --- LEITURA DO SWAGGER ---
+// Faz a leitura síncrona do JSON na raiz do projeto
+const swaggerFile = JSON.parse(
+    fs.readFileSync(path.resolve(process.cwd(), 'swagger-output.json'), 'utf-8')
+);
+
+
 
 const app = express();
 
@@ -54,7 +64,6 @@ app.use(loggerMiddleware);
 // --- ROTAS PÚBLICAS ---
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
-
 app.use('/api/gemini', geminiRoutes);
 
 
@@ -68,7 +77,7 @@ app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/publicacoes', publicacaoRoutes);
 app.use('/api/denuncia', denunciaRoutes);
 app.use('/api/parceiros', parceiroRoutes);
- // Rota duplicada foi unificada aqui
+ 
 //app.use('/api/share-link', shareLinkRoutes);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
