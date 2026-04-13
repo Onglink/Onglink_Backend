@@ -32,6 +32,8 @@ jobs:
         run: npm test  
         env:
           API_KEY: ${{ secrets.API_KEY }}
+          LOGTAIL_TOKEN: token_para_testes 
+          GEMINI_API_KEY: token_gemini_key 
 
       # PARTE 2 - Automação de Versão (Script original do professor)
 
