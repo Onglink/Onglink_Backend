@@ -1,6 +1,8 @@
 import express from 'express';
 import cors, { CorsOptions } from 'cors';
 import swaggerUI from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
 // import { createRequire } from 'node:module';
 
 // Importação de Middlewares e Rotas
@@ -11,9 +13,15 @@ import { publicacaoRoutes } from "./routes/publicacao.js";
 import { denunciaRoutes } from "./routes/denuncia.js";
 import { parceiroRoutes } from "./routes/parceiro.js";
 
-import swaggerFile from '../swagger-output.json' with { type: 'json' }
+// import swaggerFile from '../swagger-output.json' with { type: 'json' }
 // const require = createRequire(import.meta.url);
 // const swaggerFile = require('../swagger-output.json');
+
+// --- LEITURA DO SWAGGER ---
+// Faz a leitura síncrona do JSON na raiz do projeto
+const swaggerFile = JSON.parse(
+    fs.readFileSync(path.resolve(process.cwd(), 'swagger-output.json'), 'utf-8')
+);
 
 const app = express();
 
