@@ -1,6 +1,6 @@
 // parceiroController.js - CÓDIGO FINAL COM PROJEÇÃO COMPLETA PARA O MODAL
 import type { Request, Response } from 'express';
-import Ong from '../models/ongModel';
+import Ong from '../models/ongModel.js';
 
 export const listarParceiros = async (req: Request, res: Response) => {
     try {

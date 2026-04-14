@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import crypto from 'crypto';
-import  SharedLink  from '../models/shareLinkModel';
+import  SharedLink  from '../models/shareLinkModel.js';
 
  // Biblioteca nativa do Node (Zero risco)
 

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import Ong from '../models/ongModel';
-import Usuario from '../models/usuarioModel';
+import Ong from '../models/ongModel.js';
+import Usuario from '../models/usuarioModel.js';
 
 
 const cadastrarOng = async (req: Request, res: Response) => {

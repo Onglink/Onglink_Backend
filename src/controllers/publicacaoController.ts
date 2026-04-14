@@ -1,5 +1,5 @@
 import type {Request, Response} from 'express';
-import Publicacao from '../models/publicacaoModel'; 
+import Publicacao from '../models/publicacaoModel.js'; 
 //import Usuario from '..usuarioModel.ts';
 //import Ong from '../models/ongModel.ts';// <--- ESSENCIAL: Importar para o populate funcionar
 

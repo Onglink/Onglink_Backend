@@ -9,7 +9,7 @@ import {
     atualizarUsuario,
     deletarUsuario,
     loginUsuario, 
-} from '../controllers/usuarioController'; 
+} from '../controllers/usuarioController.js'; 
 
 router_usuario.post('/login', loginUsuario);
 router_usuario.post('/cadastro', cadastrarUsuario);

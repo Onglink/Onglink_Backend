@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 //import Publicacao from "../models/publicacaoModel.ts";
-import Denuncia from "../models/denunciaModel";
+import Denuncia from "../models/denunciaModel.js";
 
 const cadastrarDenuncia = async (req: Request, res: Response) => {
     try {
