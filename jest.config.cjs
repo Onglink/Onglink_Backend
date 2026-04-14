@@ -1,6 +1,10 @@
 module.exports = {
   preset:'ts-jest',
   testEnvironment: 'node',
+  moduleNameMapper: {
+    // Quando o jest vir um arquivo terminando em .js dentro da sua pasta src, ele deve tentar resolver como .ts.
+    '^(\\.{1,2}/.*)\\.js$': '$1', 
+  },
 
   // A lista de caminhos onde o Jest deve procurar por arquivos de teste:
   testMatch: [

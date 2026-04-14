@@ -6,20 +6,22 @@ import path from 'path';
 // import { createRequire } from 'node:module';
 
 // Importação de Middlewares e Rotas
-import { apiKeyAuth } from "./middleware/apiKeyAuth";
-import { ongRoutes } from "./routes/ong";
-import { usuarioRoutes } from "./routes/usuario";
-import { publicacaoRoutes } from "./routes/publicacao";
-import { denunciaRoutes } from "./routes/denuncia";
-import { parceiroRoutes } from "./routes/parceiro";
-import { geminiRoutes } from "./routes/geminiRoutes";
+
+import { apiKeyAuth } from "./middleware/apiKeyAuth.js";
+import { ongRoutes } from "./routes/ong.js";
+import { usuarioRoutes } from "./routes/usuario.js";
+import { publicacaoRoutes } from "./routes/publicacao.js";
+import { denunciaRoutes } from "./routes/denuncia.js";
+import { parceiroRoutes } from "./routes/parceiro.js";
+import { geminiRoutes } from "./routes/geminiRoutes.js";
 
 //import swaggerFile from '../swagger-output.json' with { type: 'json'};
 
 import { Request, Response, NextFunction } from 'express'; // se já não tiver importado
 import { logger } from './logger/logger-winston';
 
-import {loggerMiddleware} from './middleware/loggerMiddleware';
+import { loggerMiddleware } from './middleware/loggerMiddleware.js';
+
 // const require = createRequire(import.meta.url);
 // const swaggerFile = require('../swagger-output.json');
 
@@ -28,7 +30,6 @@ import {loggerMiddleware} from './middleware/loggerMiddleware';
 const swaggerFile = JSON.parse(
     fs.readFileSync(path.resolve(process.cwd(), 'swagger-output.json'), 'utf-8')
 );
-
 
 
 const app = express();
