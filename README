@@ -1,16 +1,31 @@
-## Comandos Docker Utilizados: ##
+## Comandos Docker Utilizados:
 
--> Criar imagem Docker
+### 1. Criar imagem
+
+```bash
   docker build -t onglink-backend .
+```
 
--> Criar container Docker
+### Rodar container
+
+```bash
   docker run -d -p 4000:4000 --name container-onglink-backend --env-file .env onglink-backend
+```
 
--> Log para verificar funcionamento do container Docker
+### Log para verificar funcionamento do container
+
+```bash
   docker logs container-onglink-backend
+```
 
--> Parar execução do container Docker
+### Parar execução do container
+
+```bash
   docker stop container-onglink-backend
+```
 
--> Remover container Docker
+### Remover container
+
+```bash
   docker rm container-onglink-backend
+```
