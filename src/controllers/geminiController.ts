@@ -1,35 +1,32 @@
 import { Request, Response } from 'express';
-import { GoogleGenAI } from "@google/genai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY as string
+
+const model = new ChatGoogleGenerativeAI({
+  model: "gemini-flash-latest",
+  apiKey: process.env.GOOGLE_API_KEY
 });
 
-export async function geminiController(req: Request, res: Response) {
-    try {
-        // 1. O método retorna um objeto que contém a propriedade 'response'
-        const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: "O que é ONGLink?",
-            config: {
-                systemInstruction: "Onglink, trata-se de uma plataforma...",
-            },
-        });
+export const geminiController = async (req: Request, res: Response) => {
+  try {
+    const { mensagem } = req.body; // Pega o texto enviado pelo usuário
 
-        // 2. Acesse o método .text() de dentro do objeto response
-        // O SDK garante que 'response' existe no resultado da promessa
-        const text = response.text;
-
-        return res.status(200).json({
-            success: true,
-            data: text
-        });
-
-    } catch (error) {
-        console.error("Erro no Gemini:", error);
-        return res.status(500).json({
-            success: false,
-            error: "Falha ao processar requisição com IA."
-        });
+    if (!mensagem) {
+      return res.status(400).json({ error: "A mensagem é obrigatória." });
     }
-}
+
+    const response = await model.invoke(mensagem);
+
+    return res.status(200).json({
+      sucesso: true,
+      resposta: response.content
+    });
+
+  } catch (error: any) {
+    console.error("DETALHE DO ERRO:", error.response?.data || error.message);
+   return res.status(500).json({ 
+    error: "Erro ao processar com a IA.",
+    detalhe: error.message 
+  });
+  }
+};
