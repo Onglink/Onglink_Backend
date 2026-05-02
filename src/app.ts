@@ -65,7 +65,10 @@ app.use(loggerMiddleware);
 // --- ROTAS PÚBLICAS ---
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 app.use('/api/gemini', geminiRoutes);
-
+// Rota dedicada para manter o servidor acordado
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong');
+});
 
 // --- MIDDLEWARE DE AUTENTICAÇÃO ---
 // Protege todas as rotas abaixo
