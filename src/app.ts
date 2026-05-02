@@ -64,7 +64,6 @@ app.use(loggerMiddleware);
 
 // --- ROTAS PÚBLICAS ---
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
-
 app.use('/api/gemini', geminiRoutes);
 
 

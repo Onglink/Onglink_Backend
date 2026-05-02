@@ -1,4 +1,4 @@
-import { geminiController } from "../controllers/geminiController";
+import { geminiController } from "../controllers/geminiController.js";
 import express, { Router } from 'express';
 
 const router_gemini: Router = express.Router();
