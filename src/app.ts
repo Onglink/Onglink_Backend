@@ -18,7 +18,7 @@ import { geminiRoutes } from "./routes/geminiRoutes.js";
 //import swaggerFile from '../swagger-output.json' with { type: 'json'};
 
 import { Request, Response, NextFunction } from 'express'; // se já não tiver importado
-import { logger } from './logger/logger-winston';
+import { logger } from './logger/logger-winston.js';
 
 import { loggerMiddleware } from './middleware/loggerMiddleware.js';
 
