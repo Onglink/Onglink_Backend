@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import {logger} from '../logger/logger-winston';
+import {logger} from '../logger/logger-winston.js';
 
 export const loggerMiddleware = (
   req: Request,

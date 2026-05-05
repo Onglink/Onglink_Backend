@@ -18,7 +18,7 @@ import { geminiRoutes } from "./routes/geminiRoutes.js";
 //import swaggerFile from '../swagger-output.json' with { type: 'json'};
 
 import { Request, Response, NextFunction } from 'express'; // se já não tiver importado
-import { logger } from './logger/logger-winston';
+import { logger } from './logger/logger-winston.js';
 
 import { loggerMiddleware } from './middleware/loggerMiddleware.js';
 
@@ -64,9 +64,11 @@ app.use(loggerMiddleware);
 
 // --- ROTAS PÚBLICAS ---
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
-
 app.use('/api/gemini', geminiRoutes);
-
+// Rota dedicada para manter o servidor acordado
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong');
+});
 
 // --- MIDDLEWARE DE AUTENTICAÇÃO ---
 // Protege todas as rotas abaixo

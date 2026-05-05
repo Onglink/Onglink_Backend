@@ -1,9 +1,7 @@
-import { geminiController } from "../controllers/geminiController";
+import { geminiController } from "../controllers/geminiController.js";
 import express, { Router } from 'express';
 
 const router_gemini: Router = express.Router();
 
-// Alterado para POST para receber o prompt no body
-router_gemini.post('/analisar', geminiController);
-
+router_gemini.post('/', geminiController)
 export const geminiRoutes = router_gemini;
