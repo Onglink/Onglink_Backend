@@ -133,3 +133,13 @@ jobs:
           file: ./Dockerfile
           push: false
           tags: onglink-backend:${{ env.new_version || 'test' }}
+
+          # PARTE 5 - SONAR QUBE
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarCloud-github-action@v2
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+       
