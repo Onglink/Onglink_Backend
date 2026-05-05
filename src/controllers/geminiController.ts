@@ -55,4 +55,4 @@ export const geminiController = async (req: Request, res: Response) => {
       detalhe: error.message 
     });
   }
-};
+}; 
