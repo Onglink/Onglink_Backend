@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # --- BANCO DE DADOS ---
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_onglink
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DOCKER_MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DOCKER_MONGO_PASSWORD}
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - onglink-network
+
+  # --- BACKEND ---
+  backend:
+    image: onglink/onglink-backend:latest
+    container_name: backend_onglink
+    restart: always
+    depends_on:
+      - mongodb
+    environment:
+      # A URL de conexão usa o nome do serviço "mongodb" em vez de localhost
+      - MONGO_URI=mongodb://${DOCKER_MONGO_USER}:${DOCKER_MONGO_PASSWORD}@mongodb:27017/onglink_db?authSource=admin
+      - PORT=4000
+    ports:
+      - "4000:4000"
+    networks:
+      - onglink-network
+
+  # --- FRONTEND ---
+  frontend:
+    image: onglink/onglink-frontend:latest
+    container_name: frontend_onglink
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    networks:
+      - onglink-network
+
+# --- GERENCIAMENTO DE VOLUMES E REDES ---
+volumes:
+  mongodb_data: # Garante que os dados do banco não sumam ao desligar os containers
+
+
+
+# Regra de rede para permitir a comunicação entre os containers através do Service Discovery do Docker,
+# que permite que eles se encontrem somente pelo nome do serviço, sem precisar do IP, garantindo que a 
+# comunicação seja restrita ao ambiente interno dos containers
+
+networks:
+  onglink-network:
+    driver: bridge # driver do Docker para criar uma rede virtual isolada
