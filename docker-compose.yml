@@ -25,6 +25,7 @@ services:
       # A URL de conexão usa o nome do serviço "mongodb" em vez de localhost
       - MONGO_URI=mongodb://${DOCKER_MONGO_USER}:${DOCKER_MONGO_PASSWORD}@mongodb:27017/onglink_db?authSource=admin
       - PORT=4000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     ports:
       - "4000:4000"
     networks:
