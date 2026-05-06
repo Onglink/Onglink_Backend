@@ -16,7 +16,7 @@ services:
 
   # --- BACKEND ---
   backend:
-    image: onglink/onglink-backend:latest
+    image: onglink/onglink_backend:latest
     container_name: backend_onglink
     restart: always
     depends_on:
@@ -32,7 +32,7 @@ services:
 
   # --- FRONTEND ---
   frontend:
-    image: onglink/onglink-frontend:latest
+    image: onglink/onglink_frontend:latest
     container_name: frontend_onglink
     restart: always
     depends_on:
