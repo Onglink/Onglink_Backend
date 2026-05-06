@@ -137,8 +137,8 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: false
-          tags: onglink-backend:${{ env.new_version || 'test' }}
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/onglink_backend:${{ env.new_version || 'test' }}
 
           # PARTE 5 - SONAR QUBE
 
