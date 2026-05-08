@@ -57,7 +57,6 @@ volumes:
   mongodb_data: # Garante que os dados do banco não sumam ao desligar os containers
 
 
-
 # Regra de rede para permitir a comunicação entre os containers através do Service Discovery do Docker,
 # que permite que eles se encontrem somente pelo nome do serviço, sem precisar do IP, garantindo que a 
 # comunicação seja restrita ao ambiente interno dos containers
