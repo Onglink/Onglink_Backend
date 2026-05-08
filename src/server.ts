@@ -5,6 +5,10 @@ import app from './app.js';
 const port = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI as string;
 
+if (!MONGO_URI) {
+  console.error("ERRO: A variável MONGO_URI não foi encontrada!");
+}
+
 // Conexão com o Banco de Dados e Inicialização do Servidor
 mongoose.connect(MONGO_URI)
     .then(() => {
