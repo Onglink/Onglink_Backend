@@ -4,7 +4,7 @@ import { SystemMessage, HumanMessage, AIMessage } from "@langchain/core/messages
 
 const model = new ChatGoogleGenerativeAI({
   model: "gemini-flash-latest",
-  apiKey: process.env.GOOGLE_API_KEY
+  apiKey: process.env.GOOGLE_API_KEY || "chave_ficticia_para_testes"
 });
 
 export const geminiController = async (req: Request, res: Response) => {

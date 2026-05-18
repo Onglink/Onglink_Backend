@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import Ong from '../models/ongModel.js';
 import Usuario from '../models/usuarioModel.js';
 
-
+//post
 const cadastrarOng = async (req: Request, res: Response) => {
     try {
 
@@ -35,7 +35,7 @@ const cadastrarOng = async (req: Request, res: Response) => {
 };
 
 
-
+//get
 const listarOngs = async (req: Request, res: Response) => {
     try {
 
@@ -51,7 +51,7 @@ const listarOngs = async (req: Request, res: Response) => {
     }
 };
 
-
+//get por id
 const buscarOngPorId = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -75,7 +75,7 @@ const buscarOngPorId = async (req: Request, res: Response) => {
 };
 
 
-// --- UPDATE (Dados Gerais) ---
+// --- PUT (Dados Gerais) ---
 const atualizarOng = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -99,7 +99,7 @@ const atualizarOng = async (req: Request, res: Response) => {
         res.status(400).json({ error: 'Erro ao atualizar ONG.', details: errorMessage || err });
     }
 };
-// --- UPDATE (Apenas Status - Uso Administrativo) ---
+// --- PATCH (Apenas Status - Uso Administrativo) ---
 const atualizarStatusOng = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -120,6 +120,7 @@ const atualizarStatusOng = async (req: Request, res: Response) => {
     }
 };
 
+//delete
 const deletarOng = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

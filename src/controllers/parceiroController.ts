@@ -14,11 +14,11 @@ export const listarParceiros = async (req: Request, res: Response) => {
             telefone: 1,
             causaSocial: 1,
             logo: 1,
-            email: 1,           // Adicionado
-            descricao: 1,       // Adicionado
-            razaoSocial: 1,     // Adicionado
-            endereco: 1,        // CRUCIAL: Sub-documento
-            redeSocial: 1,      // CRUCIAL: Sub-documento
+            email: 1,           
+            descricao: 1,       
+            razaoSocial: 1,     
+            endereco: 1,        
+            redeSocial: 1,      
             _id: 1              
         });
 
