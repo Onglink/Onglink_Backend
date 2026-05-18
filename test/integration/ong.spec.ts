@@ -37,6 +37,21 @@ describe('Integration Test: ONG Controller & Routes', () => {
             expect(response.body).toEqual(mockOngList);
             expect(Ong.find).toHaveBeenCalledTimes(1); // Garante que o banco foi chamado
         });
+
+        it ('should return 500 if database fail to list ONGs', async() =>{
+            //Arange
+            jest.spyOn(Ong,'find').mockRejectedValueOnce(new Error('Erro de banco de dados'))
+            //act
+            const response = await request(app)
+            .get('api/ongs')
+            .set('x-api-key', 'test-api-key')
+            .send();
+            //assert
+            expect(response.status).toBe(500);
+            expect(response.body.error).toBe('Erro ao listar ONGs.')
+            expect(response.body.details).toBe('Erro interno do banco');
+
+        });
     });
 
     describe('POST /api/ongs', () => {
@@ -59,6 +74,7 @@ describe('Integration Test: ONG Controller & Routes', () => {
             jest.spyOn(Ong.prototype, 'save').mockResolvedValueOnce(mockOngSalva as never);
             // Mockamos o findByIdAndUpdate do Usuario (que vincula a ONG ao usuário)
             jest.spyOn(Usuario, 'findByIdAndUpdate').mockResolvedValueOnce(true as never);
+
 
             // Act
             const response = await request(app)
@@ -107,6 +123,7 @@ describe('Integration Test: ONG Controller & Routes', () => {
             jest.spyOn(Ong, 'findById').mockReturnValueOnce({
                 populate: jest.fn().mockResolvedValueOnce(mockOng)
             } as never);
+
 
             // Act
             const response = await request(app)
