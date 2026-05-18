@@ -1,10 +1,13 @@
 import request from 'supertest';
-import app from '../../src/app'; // Ajuste o caminho conforme a sua estrutura de pastas
+import app from '../../src/app';
 import Ong from '../../src/models/ongModel';
 import Usuario from '../../src/models/usuarioModel';
 
 // Configuramos uma API KEY falsa para conseguir passar pelo middleware apiKeyAuth
 process.env.API_KEY = 'test-api-key';
+process.env.GOOGLE_API_KEY = 'fake-google-api-key';
+
+
 
 describe('Integration Test: ONG Controller & Routes', () => {
     
@@ -15,7 +18,7 @@ describe('Integration Test: ONG Controller & Routes', () => {
 
     describe('GET /api/ongs', () => {
         it('should return a list of ONGs with status 200', async () => {
-            // AAA: Arrange
+            // Arrange
             const mockOngList = [
                 { _id: '1', razaoSocial: 'ONG Esperança', nomeFantasia: 'Esperança' },
                 { _id: '2', razaoSocial: 'ONG Ajuda', nomeFantasia: 'Ajuda' }
@@ -23,13 +26,13 @@ describe('Integration Test: ONG Controller & Routes', () => {
             // Intercepta o Ong.find() do Mongoose e força a retornar a lista mockada
             jest.spyOn(Ong, 'find').mockResolvedValueOnce(mockOngList as never);
 
-            // AAA: Act
+            // Act
             const response = await request(app)
                 .get('/api/ongs')
                 .set('x-api-key', 'test-api-key') // Passando a chave da API!
                 .send();
 
-            // AAA: Assert
+            // Assert
             expect(response.status).toBe(200);
             expect(response.body).toEqual(mockOngList);
             expect(Ong.find).toHaveBeenCalledTimes(1); // Garante que o banco foi chamado
@@ -38,7 +41,7 @@ describe('Integration Test: ONG Controller & Routes', () => {
 
     describe('POST /api/ongs', () => {
         it('should create a new ONG and link to user, returning status 201', async () => {
-            // AAA: Arrange
+            // Arrange
             const novaOngPayload = {
                 razaoSocial: "ONG Teste",
                 nomeFantasia: "Teste",
@@ -47,7 +50,7 @@ describe('Integration Test: ONG Controller & Routes', () => {
                 repLegal: "Rafael",
                 telefone: "11999999999",
                 email: "contato@ongteste.com",
-                assignedTo: ["fake-user-id-123"] // Array com ID do usuário dono
+                assignedTo: ["fake-user-id-123"]
             };
 
             const mockOngSalva = { _id: "fake-ong-id-456", ...novaOngPayload };
@@ -57,13 +60,13 @@ describe('Integration Test: ONG Controller & Routes', () => {
             // Mockamos o findByIdAndUpdate do Usuario (que vincula a ONG ao usuário)
             jest.spyOn(Usuario, 'findByIdAndUpdate').mockResolvedValueOnce(true as never);
 
-            // AAA: Act
+            // Act
             const response = await request(app)
                 .post('/api/ongs')
                 .set('x-api-key', 'test-api-key')
                 .send(novaOngPayload);
 
-            // AAA: Assert
+            // Assert
             expect(response.status).toBe(201);
             expect(response.body.message).toBe('ONG cadastrada com sucesso! Aguardando aprovação.');
             expect(response.body.id).toBe(mockOngSalva._id);
@@ -75,16 +78,16 @@ describe('Integration Test: ONG Controller & Routes', () => {
         });
 
         it('should return 400 if database save fails', async () => {
-            // AAA: Arrange
+            // Arrange
             jest.spyOn(Ong.prototype, 'save').mockRejectedValueOnce(new Error('Erro de Validação do Mongoose'));
 
-            // AAA: Act
+            // Act
             const response = await request(app)
                 .post('/api/ongs')
                 .set('x-api-key', 'test-api-key')
                 .send({ nomeFantasia: 'ONG Faltando Dados' });
 
-            // AAA: Assert
+            // Assert
             expect(response.status).toBe(400);
             expect(response.body.error).toBe('Erro ao cadastrar ONG.');
             expect(response.body.details).toBe('Erro de Validação do Mongoose');
@@ -93,7 +96,7 @@ describe('Integration Test: ONG Controller & Routes', () => {
 
     describe('GET /api/ongs/:id', () => {
         it('should return an ONG by ID with populated assignedTo field', async () => {
-            // AAA: Arrange
+            // Arrange
             const mockOng = {
                 _id: 'fake-ong-id-456',
                 nomeFantasia: 'ONG Teste',
@@ -105,47 +108,48 @@ describe('Integration Test: ONG Controller & Routes', () => {
                 populate: jest.fn().mockResolvedValueOnce(mockOng)
             } as never);
 
-            // AAA: Act
+            // Act
             const response = await request(app)
                 .get('/api/ongs/fake-ong-id-456')
                 .set('x-api-key', 'test-api-key')
                 .send();
 
-            // AAA: Assert
+            // Assert
             expect(response.status).toBe(200);
             expect(response.body).toEqual(mockOng);
         });
 
         it('should return 404 if ONG is not found', async () => {
-            // AAA: Arrange
+            // Arrange
             jest.spyOn(Ong, 'findById').mockReturnValueOnce({
                 populate: jest.fn().mockResolvedValueOnce(null) // Simula que não encontrou nada
             } as never);
 
-            // AAA: Act
+            // Act
             const response = await request(app)
                 .get('/api/ongs/id-inexistente')
                 .set('x-api-key', 'test-api-key')
                 .send();
 
-            // AAA: Assert
+            // Assert
             expect(response.status).toBe(404);
             expect(response.body.error).toBe('ONG não encontrada.');
         });
+
         describe('PUT /api/ongs/:id', () => {
-        it('should update an ONG and return status 200 (stripping situacaoCadastral)', async () => {
-            // AAA: Arrange
+        it('should update an ONG and return status 200', async () => {
+            // Arrange
             const mockOngAtualizada = { _id: 'fake-id', nomeFantasia: 'ONG Nova' };
             jest.spyOn(Ong, 'findByIdAndUpdate').mockResolvedValueOnce(mockOngAtualizada as never);
 
-            // AAA: Act
+            // Act
             const response = await request(app)
                 .put('/api/ongs/fake-id')
                 .set('x-api-key', 'test-api-key')
                 // Enviamos dados permitidos E uma tentativa de mudar o status (não permitida aqui)
                 .send({ nomeFantasia: 'ONG Nova', situacaoCadastral: 'aprovada' });
 
-            // AAA: Assert
+            // Assert
             expect(response.status).toBe(200);
             expect(response.body.message).toBe('ONG atualizada!');
             expect(response.body.ong).toEqual(mockOngAtualizada);
