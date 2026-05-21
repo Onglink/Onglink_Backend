@@ -186,3 +186,6 @@ jobs:
           to: ${{ secrets.MAIL_DESTINO }}
           from: "${{ secrets.MAIL_DESTINO}} - Github Actions"
           body: "A CI passou, mas ocorreu uma FALHA na geração da Release ou envio do Docker no repositório ${{ github.repository }}! Verifique o log."
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
