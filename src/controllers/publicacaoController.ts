@@ -3,7 +3,7 @@ import Publicacao from '../models/publicacaoModel.js';
 //import Usuario from '..usuarioModel.ts';
 //import Ong from '../models/ongModel.ts';// <--- ESSENCIAL: Importar para o populate funcionar
 
-
+//post
 const criarPublicacao = async (req: Request, res: Response) => {
     const imagem = req.file;
     try {
@@ -46,7 +46,7 @@ const criarPublicacao = async (req: Request, res: Response) => {
         res.status(400).json({ message: 'Erro ao criar a publicação.', error: errorMessage });
     }
 };
-
+//get
 const buscarPublicacao = async (req: Request, res: Response) => {
     try {
         const publicacoes = await Publicacao
@@ -70,7 +70,7 @@ const buscarPublicacao = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Erro ao buscar publicações.', error: errorMessage });
     }
 };
-
+//get por id
 const buscarPublicacaoPorId = async (req: Request, res: Response) => {
     try {
         const publicacao = await Publicacao.findById(req.params.id)
@@ -85,7 +85,7 @@ const buscarPublicacaoPorId = async (req: Request, res: Response) => {
         res.status(500).json({ error: errorMessage });
     }
 };
-
+//put
 const editarPublicacao = async (req: Request, res: Response) => {
     try {
         const publicacaoAtualizada = await Publicacao.findByIdAndUpdate(
@@ -97,7 +97,7 @@ const editarPublicacao = async (req: Request, res: Response) => {
         res.status(400).json({ error: errorMessage });
     }
 };
-
+//delete
 const excluirPublicacao = async (req: Request, res: Response) => {
     try {
         const publicacaoExcluida = await Publicacao.findByIdAndDelete(req.params.id);

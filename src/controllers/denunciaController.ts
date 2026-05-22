@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 //import Publicacao from "../models/publicacaoModel.ts";
 import Denuncia from "../models/denunciaModel.js";
 
+//post
 const cadastrarDenuncia = async (req: Request, res: Response) => {
     try {
         const novaDenuncia = new Denuncia(req.body);
@@ -18,7 +19,7 @@ const cadastrarDenuncia = async (req: Request, res: Response) => {
         });
     }
 };
-
+//get
 const listarDenuncia = async (req: Request, res: Response) => {
     try {
         const lista = await Denuncia.find({});
@@ -31,6 +32,8 @@ const listarDenuncia = async (req: Request, res: Response) => {
         });
     }
 };
+
+//get por id
 const buscarDenuncia = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -49,7 +52,7 @@ const buscarDenuncia = async (req: Request, res: Response) => {
         });
     }
 };
-
+//delete
 const deletarDenuncia = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

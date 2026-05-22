@@ -18,4 +18,10 @@ module.exports = {
   restoreMocks: true,
   collectCoverageFrom: ['src/**/*.ts'],
   collectCoverage: true,
-};
+
+coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "src/server.ts",
+    "src/swagger.ts"
+  ],
+  };
