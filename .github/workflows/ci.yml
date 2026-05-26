@@ -71,6 +71,8 @@ jobs:
     needs: ci 
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' # Só gera release se for push direto na main
     
+    env:
+      new_version: ''
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -189,3 +191,17 @@ jobs:
           projectBaseDir: .
         env:
           SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      # PARTE 6 - Deploy no Render (Webhook)
+      - name: Disparar Deploy Automático no Render
+        if: success() # Garante que só roda se o build do Docker deu certo
+        env:
+          DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+          # Usamos a mesma versão que acabou de ser enviada para o Docker Hub
+          IMAGE_TAG: ${{ env.new_version }}
+        run: |
+          # A URL da imagem com formatação "URL-encoded" usando a tag da versão semântica
+          ENCODED_IMAGE="docker.io%2Fonglink%2Fonglink_backend%3A${IMAGE_TAG}"
+          
+          # Faz a chamada para o Render puxar a versão exata recém-criada
+          curl "${DEPLOY_HOOK}&imgURL=${ENCODED_IMAGE}"
