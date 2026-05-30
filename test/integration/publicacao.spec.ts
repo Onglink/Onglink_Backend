@@ -175,7 +175,7 @@ describe('Publicacao Controller & Routes Integration Test', () => {
         .set('Authorization', 'Bearer fake-jwt-token')
         .field('titulo', 'Teste com Imagem') // Campo de texto
         .field('criadoPor', id)
-        .attach('imagem', Buffer.from('fake-image-data'), 'test.png'); // Upload do arquivo
+        .attach('image', Buffer.from('fake-image-data'), 'test.png'); // Upload do arquivo
 
       expect(response.status).toBe(201);
     });
