@@ -46,10 +46,12 @@ const app = express();
 const allowedOrigins = [
     'http://159.65.230.141', // <-- ADICIONE O IP DO FRONTEND AQUI
     'http://159.65.230.141:80', // <-- Boa prática colocar com a porta 80 também
-    'https://onglink-frontend-hml.onrender.com/',
+
+    'https://onglink-frontend-hml.onrender.com',
+
     'https://onglink.vercel.app', 
     'http://localhost:3000',
-    'http://localhost:4000' 
+    'http://localhost:4000'  
 ];
 
 const corsOptions: CorsOptions = {
