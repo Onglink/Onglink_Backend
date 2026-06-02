@@ -1,13 +1,14 @@
 {
   "name": "onglinkdb",
-  "version": "1.10.0",
+  "version": "1.12.0",
   "description": "",
   "main": "server.ts",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests",
     "start": "node --loader ts-node/esm src/server.ts",
     "dev": "nodemon --exec node --loader ts-node/esm src/server.ts",
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "swagger": "node --loader ts-node/esm src/swagger.ts"
   },
   "repository": {
     "type": "git",
