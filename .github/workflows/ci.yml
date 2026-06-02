@@ -41,7 +41,7 @@ jobs:
 
       # PARTE 5 - SONAR QUBE (Movido para a CI, pois é validação de código)
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@59db25f34e16620e48ab4bb9e4a5dce155cb5432
+        uses: SonarSource/sonarqube-scan-action@v7
         with:
           projectBaseDir: .
         env:
@@ -193,11 +193,11 @@ jobs:
           SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
       # PARTE 6 - Deploy no Render (Webhook)
       - name: Disparar Deploy Automático no Render
-        if: success() # Garante que só roda se o build do Docker deu certo
+        if: success() # só roda se o build do Docker deu certo
         env:
           DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
 
-          # Usamos a mesma versão que acabou de ser enviada para o Docker Hub
+          # versão que acabou de ser enviada para o Docker Hub
           IMAGE_TAG: ${{ env.new_version }}
         run: |
           # A URL da imagem com formatação "URL-encoded" usando a tag da versão semântica
