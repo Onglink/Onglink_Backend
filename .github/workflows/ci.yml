@@ -41,7 +41,7 @@ jobs:
 
       # PARTE 5 - SONAR QUBE (Movido para a CI, pois é validação de código)
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@59db25f34e16620e48ab4bb9e4a5dce155cb5432
+        uses: SonarSource/sonarqube-scan-action@v7
         with:
           projectBaseDir: .
         env:
