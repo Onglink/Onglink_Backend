@@ -67,6 +67,19 @@ describe('Integration Test: Usuario Controller & Routes', () => {
       expect(response.status).toBe(400);
       expect(response.body.error).toBe('Email ou CPF já cadastrado.');
     });
+
+   
+    it('should return 400 on generic database error during creation', async () => {
+      jest.spyOn(Usuario.prototype, 'save').mockRejectedValueOnce(new Error('DB Error'));
+
+      const response = await request(app)
+        .post('/api/usuarios/cadastro')
+        .set('x-api-key', 'test-api-key')
+        .send({nome: 'Falha', email: 'falha@teste.com', senha: '123'});
+
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe('Erro ao cadastrar usuário.');
+    });
   });
 
   describe('POST /api/usuarios/login', () => {
@@ -114,6 +127,46 @@ describe('Integration Test: Usuario Controller & Routes', () => {
       expect(response.status).toBe(401);
       expect(response.body.error).toBe('Email ou senha inválidos.');
     });
+
+    
+    it('should return 400 if email or password are missing', async () => {
+      const response = await request(app)
+        .post('/api/usuarios/login')
+        .set('x-api-key', 'test-api-key')
+        .send({email: 'joao@teste.com'}); // Sem a senha
+
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe('Email e senha são obrigatórios.');
+    });
+
+   
+    it('should return 401 if user is not found', async () => {
+      jest.spyOn(Usuario, 'findOne').mockReturnValueOnce({
+        select: jest.fn().mockResolvedValueOnce(null),
+      } as never);
+
+      const response = await request(app)
+        .post('/api/usuarios/login')
+        .set('x-api-key', 'test-api-key')
+        .send({email: 'inexistente@teste.com', senha: '123'});
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBe('Email ou senha inválidos.');
+    });
+
+    
+    it('should return 500 on database error during login', async () => {
+      jest.spyOn(Usuario, 'findOne').mockReturnValueOnce({
+        select: jest.fn().mockRejectedValueOnce(new Error('DB Error')),
+      } as never);
+
+      const response = await request(app)
+        .post('/api/usuarios/login')
+        .set('x-api-key', 'test-api-key')
+        .send({email: 'joao@teste.com', senha: '123'});
+
+      expect(response.status).toBe(500);
+    });
   });
 
   describe('GET /api/usuarios', () => {
@@ -133,6 +186,18 @@ describe('Integration Test: Usuario Controller & Routes', () => {
       // Assert
       expect(response.status).toBe(200);
       expect(response.body).toEqual(mockList);
+    });
+
+    
+    it('should return 500 on database error (fallback string)', async () => {
+      jest.spyOn(Usuario, 'find').mockReturnValueOnce({
+        select: jest.fn().mockRejectedValueOnce('Falha bizarra' as never),
+      } as never);
+
+      const response = await request(app).get('/api/usuarios').set('x-api-key', 'test-api-key').send();
+
+      expect(response.status).toBe(500);
+      expect(response.body.details).toBe('Erro ao listar usuários');
     });
   });
 
@@ -155,6 +220,29 @@ describe('Integration Test: Usuario Controller & Routes', () => {
       // Assert
       expect(response.status).toBe(200);
       expect(response.body.usuario).toEqual(mockUser);
+    });
+
+    
+    it('should return 404 if user not found by id', async () => {
+        jest.spyOn(Usuario, 'findById').mockReturnValueOnce({
+          populate: jest.fn().mockReturnValueOnce({
+            select: jest.fn().mockResolvedValueOnce(null),
+          }),
+        } as never);
+  
+        const response = await request(app).get('/api/usuarios/fake-id').set('x-api-key', 'test-api-key');
+        expect(response.status).toBe(404);
+    });
+
+    it('should return 500 on database error', async () => {
+      jest.spyOn(Usuario, 'findById').mockReturnValueOnce({
+        populate: jest.fn().mockReturnValueOnce({
+          select: jest.fn().mockRejectedValueOnce(new Error('DB Error')),
+        }),
+      } as never);
+
+      const response = await request(app).get('/api/usuarios/fake-id').set('x-api-key', 'test-api-key');
+      expect(response.status).toBe(500);
     });
   });
 
@@ -181,6 +269,26 @@ describe('Integration Test: Usuario Controller & Routes', () => {
         {new: true, runValidators: true},
       );
     });
+
+    
+    it('should return 404 if user to update is not found', async () => {
+      jest.spyOn(Usuario, 'findByIdAndUpdate').mockReturnValueOnce({
+        select: jest.fn().mockResolvedValueOnce(null),
+      } as never);
+
+      const response = await request(app).put('/api/usuarios/fake-id').set('x-api-key', 'test-api-key').send({ nome: 'Novo' });
+      expect(response.status).toBe(404);
+    });
+
+    
+    it('should return 400 on database error during update', async () => {
+      jest.spyOn(Usuario, 'findByIdAndUpdate').mockReturnValueOnce({
+        select: jest.fn().mockRejectedValueOnce(new Error('DB Error')),
+      } as never);
+
+      const response = await request(app).put('/api/usuarios/fake-id').set('x-api-key', 'test-api-key').send({ nome: 'Novo' });
+      expect(response.status).toBe(400);
+    });
   });
 
   describe('DELETE /api/usuarios/:id', () => {
@@ -199,6 +307,24 @@ describe('Integration Test: Usuario Controller & Routes', () => {
       // Assert
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Usuário deletado!');
+    });
+
+    
+    it('should return 404 if user to delete is not found', async () => {
+      jest.spyOn(Usuario, 'findByIdAndDelete').mockResolvedValueOnce(null as never);
+
+      const response = await request(app).delete('/api/usuarios/fake-id').set('x-api-key', 'test-api-key').send();
+      expect(response.status).toBe(404);
+    });
+
+    
+    it('should return 500 on database error (fallback string)', async () => {
+      jest.spyOn(Usuario, 'findByIdAndDelete').mockRejectedValueOnce('Falha no banco' as never);
+
+      const response = await request(app).delete('/api/usuarios/fake-id').set('x-api-key', 'test-api-key').send();
+      
+      expect(response.status).toBe(500);
+      expect(response.body.details).toBe('Erro ao deletar usuário');
     });
   });
 });

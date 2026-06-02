@@ -1,0 +1,1308 @@
+{
+  "swagger": "2.0",
+
+  "info": {
+    "title": "API Onglink",
+
+    "description": "Documentação da API usando Swagger",
+
+    "version": "1.0.0"
+  },
+
+  "basePath": "/",
+
+  "schemes": ["http"],
+
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+
+      "in": "header",
+
+      "name": "x-api-key"
+    }
+  },
+
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+
+  "paths": {
+    "/api/ongs": {
+      "post": {
+        "tags": ["Ong"],
+
+        "description": "Cria uma nova ONG no sistema. O status será 'em analise' por padrão.",
+
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+
+        "parameters": [
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "Dados cadastrais da ONG. situacaoCadastral é omitido e definido por padrão.",
+
+            "required": true,
+
+            "schema": {
+              "$ref": "#/definitions/OngCreate"
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+
+      "get": {
+        "tags": ["Ong"],
+
+        "description": "Busca todas as ONGs cadastradas",
+
+        "responses": {
+          "200": {
+            "description": "OK",
+
+            "schema": {
+              "type": "array",
+
+              "items": {
+                "$ref": "#/definitions/Ong"
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/ongs/{id}": {
+      "get": {
+        "tags": ["Ong"],
+
+        "description": "Busca uma ONG pelo Id",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK",
+
+            "schema": {
+              "$ref": "#/definitions/Ong"
+            }
+          },
+
+          "404": {
+            "description": "Not Found"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+
+      "put": {
+        "tags": ["Ong"],
+
+        "description": "Atualiza os dados cadastrais de uma ONG (não altera o status).",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          },
+
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "Dados da ONG para atualizar.",
+
+            "required": true,
+
+            "schema": {
+              "$ref": "#/definitions/OngCreate"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "400": {
+            "description": "Bad Request"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Ong"],
+
+        "description": "Excluir uma ONG",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "404": {
+            "description": "Not Found"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/ongs/{id}/status": {
+      "patch": {
+        "tags": ["Ong"],
+
+        "description": "Atualiza APENAS a situação cadastral (status) de uma ONG (Ex: 'aprovada', 'rejeitada').",
+
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          },
+
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "O novo status da ONG.",
+
+            "required": true,
+
+            "schema": {
+              "$ref": "#/definitions/OngStatusUpdate"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "400": {
+            "description": "Bad Request"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+
+    "/api/usuarios/login": {
+      "post": {
+        "tags": ["Usuario"],
+
+        "description": "Autentica um usuário e retorna um JWT.",
+
+        "parameters": [
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "Credenciais de login",
+
+            "required": true,
+
+            "schema": {
+              "type": "object",
+
+              "required": ["email", "senha"],
+
+              "properties": {
+                "email": {
+                  "type": "string",
+
+                  "example": "usuario@email.com"
+                },
+
+                "senha": {
+                  "type": "string",
+
+                  "format": "password",
+
+                  "example": "senha123"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido"
+          },
+
+          "400": {
+            "description": "Dados inválidos"
+          },
+
+          "401": {
+            "description": "Email ou senha inválidos"
+          }
+        }
+      }
+    },
+
+    "/api/usuarios/cadastro": {
+      "post": {
+        "tags": ["Usuario"],
+
+        "description": "Cria um novo usuário no sistema.",
+
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+
+        "parameters": [
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "Dados do novo usuário. A senha é obrigatória na criação.",
+
+            "required": true,
+
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+
+    "/api/usuarios": {
+      "get": {
+        "tags": ["Usuario"],
+
+        "description": "Lista todos os usuários (sem a senha).",
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/usuarios/{id}": {
+      "get": {
+        "tags": ["Usuario"],
+
+        "description": "Busca um usuário pelo ID (sem a senha).",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "404": {
+            "description": "Not Found"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+
+      "put": {
+        "tags": ["Usuario"],
+
+        "description": "Atualiza os dados de um usuário (não altera a senha por esta rota).",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          },
+
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "Dados para atualizar. Senha será ignorada.",
+
+            "required": true,
+
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "400": {
+            "description": "Bad Request"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Usuario"],
+
+        "description": "Exclui um usuário.",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "404": {
+            "description": "Not Found"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/publicacoes": {
+      "post": {
+        "tags": ["Publicacao"],
+
+        "description": "Cria uma nova publicação",
+
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+
+        "parameters": [
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "Dados da nova publicação. Requer o ID da ONG criadora.",
+
+            "required": true,
+
+            "schema": {
+              "$ref": "#/definitions/Publicacao"
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+
+      "get": {
+        "tags": ["Publicacao"],
+
+        "description": "Buscar todas as publicações",
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/publicacoes/{id}": {
+      "get": {
+        "tags": ["Publicacao"],
+
+        "description": "Bucar uma publicação pelo Id",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "404": {
+            "description": "Not Found"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+
+      "put": {
+        "tags": ["Publicacao"],
+
+        "description": "Atualizar uma publicação",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          },
+
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "Dados para atualizar a publicação.",
+
+            "required": true,
+
+            "schema": {
+              "$ref": "#/definitions/Publicacao"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "400": {
+            "description": "Bad Request"
+          },
+
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Publicacao"],
+
+        "description": "Excluir uma publicação",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+
+          "404": {
+            "description": "Not Found"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/denuncia": {
+      "get": {
+        "tags": ["Denuncia"],
+
+        "description": "Buscar toas as denúncias.",
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+
+      "post": {
+        "tags": ["Denuncia"],
+
+        "description": "Registra uma nova denúncia.",
+
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+
+        "parameters": [
+          {
+            "name": "body",
+
+            "in": "body",
+
+            "description": "Dados da denúncia, incluindo o ID da publicação denunciada.",
+
+            "required": true,
+
+            "schema": {
+              "$ref": "#/definitions/Denuncia"
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+
+    "/api/denuncia/{id}": {
+      "get": {
+        "tags": ["Denuncia"],
+
+        "description": "Buscar uma denuncia pelo Id.",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "404": {
+            "description": "Not Found"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Denuncia"],
+
+        "description": "Excluir uma denúncia.",
+
+        "parameters": [
+          {
+            "name": "id",
+
+            "in": "path",
+
+            "required": true,
+
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+
+          "404": {
+            "description": "Not Found"
+          },
+
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "Endereco": {
+      "type": "object",
+
+      "required": ["numeroEnd", "bairro", "cidade", "estado", "cep", "rua"],
+
+      "properties": {
+        "numeroEnd": {
+          "type": "string",
+
+          "example": "123"
+        },
+
+        "complemento": {
+          "type": "string",
+
+          "example": "Ap 101"
+        },
+
+        "bairro": {
+          "type": "string",
+
+          "example": "Centro"
+        },
+
+        "cidade": {
+          "type": "string",
+
+          "example": "São Paulo"
+        },
+
+        "estado": {
+          "type": "string",
+
+          "example": "SP"
+        },
+
+        "cep": {
+          "type": "string",
+
+          "example": "01000-000"
+        },
+
+        "rua": {
+          "type": "string",
+
+          "example": "Rua Principal"
+        }
+      }
+    },
+
+    "RedeSocial": {
+      "type": "object",
+
+      "required": ["instagram", "facebook", "site"],
+
+      "properties": {
+        "instagram": {
+          "type": "string",
+
+          "example": "@onglink_oficial"
+        },
+
+        "facebook": {
+          "type": "string",
+
+          "example": "facebook.com/onglink"
+        },
+
+        "site": {
+          "type": "string",
+
+          "example": "https://onglink.org.br"
+        }
+      }
+    },
+
+    "Ong": {
+      "type": "object",
+
+      "properties": {
+        "_id": {
+          "type": "string",
+
+          "format": "ObjectId",
+
+          "example": "65f0c6d5b4a0a5b6e4e3f3a0"
+        },
+
+        "razaoSocial": {
+          "type": "string",
+
+          "example": "ONG Link de Ação Social Ltda"
+        },
+
+        "nomeFantasia": {
+          "type": "string",
+
+          "example": "Onglink"
+        },
+
+        "cnpj": {
+          "type": "string",
+
+          "example": "12.345.678/0001-90"
+        },
+
+        "cpf": {
+          "type": "string",
+
+          "example": "111.222.333-44"
+        },
+
+        "repLegal": {
+          "type": "string",
+
+          "example": "João da Silva"
+        },
+
+        "telefone": {
+          "type": "string",
+
+          "example": "1199887766"
+        },
+
+        "email": {
+          "type": "string",
+
+          "format": "email",
+
+          "example": "contato@onglink.org.br"
+        },
+
+        "endereco": {
+          "$ref": "#/definitions/Endereco"
+        },
+
+        "redeSocial": {
+          "$ref": "#/definitions/RedeSocial"
+        },
+
+        "logo": {
+          "type": "string",
+
+          "example": "http://link.para.logo.png"
+        },
+
+        "descricao": {
+          "type": "string",
+
+          "example": "A Onglink conecta doadores a causas sociais urgentes."
+        },
+
+        "dataFund": {
+          "type": "string",
+
+          "format": "date",
+
+          "example": "2015-05-20"
+        },
+
+        "causaSocial": {
+          "type": "string",
+
+          "example": "Proteção animal"
+        },
+
+        "arquivosLegais": {
+          "type": "array",
+
+          "items": {
+            "type": "string"
+          },
+
+          "example": ["link_estatuto.pdf", "link_ata.pdf"]
+        },
+
+        "imagens": {
+          "type": "array",
+
+          "items": {
+            "type": "string"
+          },
+
+          "example": ["link_imagem1.jpg", "link_imagem2.jpg"]
+        },
+
+        "assignedTo": {
+          "type": "array",
+
+          "items": {
+            "type": "string",
+
+            "format": "ObjectId"
+          },
+
+          "description": "Lista de IDs de Usuários atribuídos à ONG",
+
+          "example": ["60c72b9f91e4d0001f8d4e9d"]
+        },
+
+        "situacaoCadastral": {
+          "type": "string",
+
+          "enum": ["em analise", "aprovada", "rejeitada"],
+
+          "example": "em analise"
+        },
+
+        "createdAt": {
+          "type": "string",
+
+          "format": "date-time"
+        },
+
+        "updatedAt": {
+          "type": "string",
+
+          "format": "date-time"
+        }
+      }
+    },
+
+    "OngCreate": {
+      "type": "object",
+
+      "required": [
+        "razaoSocial",
+
+        "nomeFantasia",
+
+        "cnpj",
+
+        "cpf",
+
+        "repLegal",
+
+        "telefone",
+
+        "email",
+
+        "endereco",
+
+        "redeSocial",
+
+        "logo",
+
+        "descricao",
+
+        "dataFund",
+
+        "causaSocial",
+
+        "arquivosLegais",
+
+        "imagens",
+
+        "assignedTo"
+      ],
+
+      "properties": {
+        "razaoSocial": {
+          "type": "string",
+
+          "example": "ONG Link de Ação Social Ltda"
+        },
+
+        "nomeFantasia": {
+          "type": "string",
+
+          "example": "Onglink"
+        },
+
+        "cnpj": {
+          "type": "string",
+
+          "example": "12.345.678/0001-90"
+        },
+
+        "cpf": {
+          "type": "string",
+
+          "example": "111.222.333-44"
+        },
+
+        "repLegal": {
+          "type": "string",
+
+          "example": "João da Silva"
+        },
+
+        "telefone": {
+          "type": "string",
+
+          "example": "1199887766"
+        },
+
+        "email": {
+          "type": "string",
+
+          "format": "email",
+
+          "example": "contato@onglink.org.br"
+        },
+
+        "endereco": {
+          "$ref": "#/definitions/Endereco"
+        },
+
+        "redeSocial": {
+          "$ref": "#/definitions/RedeSocial"
+        },
+
+        "logo": {
+          "type": "string",
+
+          "example": "http://link.para.logo.png"
+        },
+
+        "descricao": {
+          "type": "string",
+
+          "example": "A Onglink conecta doadores a causas sociais urgentes."
+        },
+
+        "dataFund": {
+          "type": "string",
+
+          "format": "date",
+
+          "example": "2015-05-20"
+        },
+
+        "causaSocial": {
+          "type": "string",
+
+          "example": "Proteção animal"
+        },
+
+        "arquivosLegais": {
+          "type": "array",
+
+          "items": {
+            "type": "string"
+          },
+
+          "example": ["link_estatuto.pdf", "link_ata.pdf"]
+        },
+
+        "imagens": {
+          "type": "array",
+
+          "items": {
+            "type": "string"
+          },
+
+          "example": ["link_imagem1.jpg", "link_imagem2.jpg"]
+        },
+
+        "assignedTo": {
+          "type": "array",
+
+          "items": {
+            "type": "string",
+
+            "format": "ObjectId"
+          },
+
+          "description": "Lista de IDs de Usuários atribuídos à ONG",
+
+          "example": ["60c72b9f91e4d0001f8d4e9d"]
+        }
+      }
+    },
+
+    "OngStatusUpdate": {
+      "type": "object",
+
+      "required": ["situacaoCadastral"],
+
+      "properties": {
+        "situacaoCadastral": {
+          "type": "string",
+
+          "enum": ["em analise", "aprovada", "rejeitada"],
+
+          "example": "aprovada"
+        }
+      }
+    },
+
+    "Usuario": {
+      "type": "object",
+
+      "required": ["nome", "cpf", "email", "senha"],
+
+      "properties": {
+        "nome": {
+          "type": "string",
+
+          "example": "Maria da Silva"
+        },
+
+        "cpf": {
+          "type": "string",
+
+          "example": "999.888.777-66"
+        },
+
+        "email": {
+          "type": "string",
+
+          "format": "email",
+
+          "example": "maria@exemplo.com"
+        },
+
+        "senha": {
+          "type": "string",
+
+          "format": "password",
+
+          "description": "A senha do usuário (não será retornada no GET)",
+
+          "example": "senhaSegura123"
+        }
+      }
+    },
+
+    "Publicacao": {
+      "type": "object",
+
+      "required": ["titulo", "descricao", "imagem", "criadoPor"],
+
+      "properties": {
+        "titulo": {
+          "type": "string",
+
+          "example": "Campanha de Doação de Agasalhos"
+        },
+
+        "descricao": {
+          "type": "string",
+
+          "example": "Iniciamos nossa campanha anual de coleta de roupas de inverno para comunidades carentes."
+        },
+
+        "imagem": {
+          "type": "array",
+
+          "items": {
+            "type": "string"
+          },
+
+          "description": "Lista de URLs das imagens da publicação.",
+
+          "example": [
+            "http://link.para.foto1.jpg",
+            "http://link.para.foto2.jpg"
+          ]
+        },
+
+        "criadoPor": {
+          "type": "string",
+
+          "format": "ObjectId",
+
+          "description": "ID da ONG que criou esta publicação (Referência ao Model 'Ong').",
+
+          "example": "60c72b9f91e4d0001f8d4e9d"
+        }
+      }
+    },
+
+    "Denuncia": {
+      "type": "object",
+
+      "required": ["tipoDenuncia", "motivo", "assignedTo"],
+
+      "properties": {
+        "tipoDenuncia": {
+          "type": "string",
+
+          "enum": [
+            "Conteudo sensível",
+
+            "Conteúdo sexual",
+
+            "Conteúdo violento ou repulsivo",
+
+            "incitação ao ódio",
+
+            "Desinformação",
+
+            "Abuso infantil"
+          ],
+
+          "example": "Conteúdo sexual"
+        },
+
+        "motivo": {
+          "type": "string",
+
+          "description": "Descrição detalhada do motivo da denúncia.",
+
+          "example": "A publicação contém nudez explícita, o que viola as diretrizes."
+        },
+
+        "assignedTo": {
+          "type": "array",
+
+          "items": {
+            "type": "string",
+
+            "format": "ObjectId"
+          },
+
+          "description": "Obrigatório. ID da Publicação que está sendo denunciada.",
+
+          "example": ["60c72b9f91e4d0001f8d4e9d"]
+        }
+      }
+    }
+  }
+}

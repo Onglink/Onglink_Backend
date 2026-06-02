@@ -31,6 +31,14 @@ const swaggerFile = JSON.parse(
     fs.readFileSync(path.resolve(process.cwd(), 'swagger-output.json'), 'utf-8')
 );
 
+const packageJson = JSON.parse(
+    fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf-8')
+);
+
+// Injeta a versão do package.json no objeto da documentação
+if (!swaggerFile.info) swaggerFile.info = {};
+swaggerFile.info.version = packageJson.version;
+
 
 const app = express();
 
@@ -38,7 +46,9 @@ const app = express();
 const allowedOrigins = [
     'http://159.65.230.141', // <-- ADICIONE O IP DO FRONTEND AQUI
     'http://159.65.230.141:80', // <-- Boa prática colocar com a porta 80 também
+
     'https://onglink-frontend-hml.onrender.com',
+
     'https://onglink.vercel.app', 
     'http://localhost:3000',
     'http://localhost:4000'  
