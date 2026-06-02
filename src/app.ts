@@ -31,13 +31,13 @@ const swaggerFile = JSON.parse(
     fs.readFileSync(path.resolve(process.cwd(), 'swagger-output.json'), 'utf-8')
 );
 
-const packageJson = JSON.parse(
-    fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf-8')
-);
+// const packageJson = JSON.parse(
+//     fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf-8')
+// );
 
-// Injeta a versão do package.json no objeto da documentação
-if (!swaggerFile.info) swaggerFile.info = {};
-swaggerFile.info.version = packageJson.version;
+// // Injeta a versão do package.json no objeto da documentação
+// if (!swaggerFile.info) swaggerFile.info = {};
+// swaggerFile.info.version = packageJson.version;
 
 
 const app = express();
