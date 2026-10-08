@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import Usuario from '../models/usuarioModel.js';
+import bcrypt from 'bcrypt';
 // const bcrypt = require('bcrypt'); // REMOVIDO PARA TESTE
 import jwt from "jsonwebtoken";
 
@@ -12,13 +13,16 @@ const cadastrarUsuario = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "A senha é obrigatória." });
     }
 
+    const salt = await bcrypt.genSalt(10);
+    const senhaCriptografada = await bcrypt.hash(senha, salt);
+
     // CRIAÇÃO SEM HASH (Texto Puro)
     const novoUsuario = new Usuario({
       nome,
       cpf,
       email,
       status,
-      senha: senha, // Salva exatamente o que foi digitado
+      senha: senhaCriptografada, // Salva a senha criptografada
     });
 
     await novoUsuario.save();
@@ -60,7 +64,7 @@ const loginUsuario = async (req: Request, res: Response) => {
 
     // COMPARAÇÃO SIMPLES (Texto Puro)
     // Se a senha digitada for igual a senha do banco
-    const senhaValida = senha === usuario.senha;
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
 
     if (!senhaValida) {
       return res.status(401).json({ error: "Email ou senha inválidos." });
