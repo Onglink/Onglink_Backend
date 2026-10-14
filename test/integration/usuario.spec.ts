@@ -2,6 +2,7 @@ import request from 'supertest';
 import app from '../../src/app'; // Ajuste o caminho conforme sua estrutura
 import Usuario from '../../src/models/usuarioModel';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 // Configuramos variáveis de ambiente fakes para os testes
 process.env.API_KEY = 'test-api-key';
@@ -85,10 +86,14 @@ describe('Integration Test: Usuario Controller & Routes', () => {
   describe('POST /api/usuarios/login', () => {
     it('should login successfully and return a JWT token', async () => {
       // Arrange
+      // Gera um hash real para o mock poder ser validado pelo controller
+      const salt = await bcrypt.genSalt(10);
+      const senhaHashed = await bcrypt.hash('123', salt);
+
       const mockUser = {
         _id: 'fake-id',
         email: 'joao@teste.com',
-        senha: '123',
+        senha: senhaHashed,
         status: 'user',
       };
 
@@ -111,7 +116,15 @@ describe('Integration Test: Usuario Controller & Routes', () => {
 
     it('should return 401 if password is wrong', async () => {
       // Arrange
-      const mockUser = {_id: 'fake-id', email: 'joao@teste.com', senha: '123'}; // Senha real é 123
+
+      const salt = await bcrypt.genSalt(10);
+      const senhaHashed = await bcrypt.hash('123', salt);
+
+      const mockUser = {
+        _id: 'fake-id', 
+        email: 'joao@teste.com', 
+        senha: senhaHashed // Senha real é 123
+      }; 
 
       jest.spyOn(Usuario, 'findOne').mockReturnValueOnce({
         select: jest.fn().mockResolvedValueOnce(mockUser),
