@@ -53,7 +53,10 @@ const allowedOrigins = [
     'https://onglink.vercel.app', 
     'http://localhost:3000',
     'http://localhost:4000',
-    'http://localhost:8081'  
+    'http://localhost:8081',
+    
+    'https://onglink.duckdns.org', // NOVOS CAMINHOS ADICIONADOS COM O DOMINIO DUCKDNS
+    'https://www.onglink.duckdns.org'
 ];
 
 const corsOptions: CorsOptions = {
