@@ -1,6 +1,6 @@
 {
   "name": "onglinkdb",
-  "version": "1.12.2",
+  "version": "1.15.2",
   "description": "",
   "main": "server.ts",
   "scripts": {
