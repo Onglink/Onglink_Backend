@@ -50,6 +50,12 @@ export const geminiController = async (req: Request, res: Response) => {
 
   } catch (error: any) {
     console.error("DETALHE DO ERRO:", error.response?.data || error.message);
+    if (error.message?.includes("429") || error.status === 429) {
+      return res.status(429).json({
+        error: "Limite diário de mensagens da IA atingido. Tente novamente mais tarde.",
+        detalhe: error.message
+      });
+    }
     return res.status(500).json({ 
       error: "Erro ao processar com a IA.",
       detalhe: error.message 
