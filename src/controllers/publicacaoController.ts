@@ -48,27 +48,42 @@ const criarPublicacao = async (req: Request, res: Response) => {
 };
 //get
 const buscarPublicacao = async (req: Request, res: Response) => {
-    try {
-        const publicacoes = await Publicacao
-            .find({})
-            .populate({
-                path: 'criadoPor',
-                model: 'Usuario',
-                select: 'nome email assignedTo',
-                populate: {
-                    path: 'assignedTo',
-                    model: 'Ong',
-                    select: 'nome logo'
-                }
-            })
-            .sort({ createdAt: -1 })
-            .exec();
+  try {
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(50, Math.max(1, parseInt(req.query.limit as string) || 10));
+    const skip = (page - 1) * limit;
 
-        res.status(200).json(publicacoes);
-    } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Erro ao buscar publicações";
-        res.status(500).json({ message: 'Erro ao buscar publicações.', error: errorMessage });
-    }
+    const resultados = await Publicacao.find({})
+      .populate({
+        path: "criadoPor",
+        model: "Usuario",
+        select: "nome email assignedTo",
+        populate: {
+          path: "assignedTo",
+          model: "Ong",
+          select: "nome logo",
+        },
+      })
+      .sort({ createdAt: -1, _id: -1 })
+      .skip(skip)
+      .limit(limit + 1)
+      .exec();
+
+    const hasMore = resultados.length > limit;
+    const publicacoes = hasMore ? resultados.slice(0, limit) : resultados;
+
+    res.status(200).json({
+      publicacoes,
+      hasMore,
+      nextPage: hasMore ? page + 1 : null,
+    });
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Erro ao buscar publicações";
+    res
+      .status(500)
+      .json({ message: "Erro ao buscar publicações.", error: errorMessage });
+  }
 };
 //get por id
 const buscarPublicacaoPorId = async (req: Request, res: Response) => {
