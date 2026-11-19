@@ -13,8 +13,25 @@ describe('Publicacao Controller & Routes Integration Test', () => {
     jest.clearAllMocks();
   });
 
-  describe('GET /api/publicacoes', () => {
-    it('should list publicacoes', async () => {
+ describe('GET /api/publicacoes', () => {
+    const mockFindChain = (resultado: unknown, rejeitar = false) => {
+      const execMock = rejeitar
+        ? jest.fn().mockRejectedValueOnce(resultado as never)
+        : jest.fn().mockResolvedValueOnce(resultado as never);
+
+      const limitMock = jest.fn().mockReturnValueOnce({ exec: execMock });
+      const skipMock = jest.fn().mockReturnValueOnce({ limit: limitMock });
+      const sortMock = jest.fn().mockReturnValueOnce({ skip: skipMock });
+      const populateMock = jest.fn().mockReturnValueOnce({ sort: sortMock });
+
+      jest.spyOn(Publicacao, 'find').mockReturnValueOnce({
+        populate: populateMock,
+      } as never);
+
+      return { skipMock, limitMock };
+    };
+
+    it('should list publicacoes with default pagination', async () => {
       // Arrange
       const mockList = [
         {
@@ -27,13 +44,7 @@ describe('Publicacao Controller & Routes Integration Test', () => {
           _id: 'fakeid1',
         },
       ];
-      jest.spyOn(Publicacao, 'find').mockReturnValueOnce({
-        populate: jest.fn().mockReturnValueOnce({
-          sort: jest.fn().mockReturnValueOnce({
-            exec: jest.fn().mockResolvedValueOnce(mockList),
-          }),
-        }),
-      } as never);
+      const { skipMock, limitMock } = mockFindChain(mockList);
 
       // Act
       const response = await request(app)
@@ -43,17 +54,43 @@ describe('Publicacao Controller & Routes Integration Test', () => {
 
       // Assert
       expect(response.status).toBe(200);
-      expect(response.body).toEqual(mockList);
+      expect(skipMock).toHaveBeenCalledWith(0);
+      expect(limitMock).toHaveBeenCalledWith(11); // limit padrão (10) + 1
+      expect(response.body).toEqual({
+        publicacoes: mockList,
+        hasMore: false,
+        nextPage: null,
+      });
+    });
+
+    it('should return hasMore true and nextPage when more items exist', async () => {
+      // Arrange: simulando limit=2 onde o banco devolve 3 itens (limit + 1)
+      const mockList = [
+        { _id: '1', titulo: 'Post 1', descricao: 'Desc 1' },
+        { _id: '2', titulo: 'Post 2', descricao: 'Desc 2' },
+        { _id: '3', titulo: 'Post 3', descricao: 'Desc 3' },
+      ];
+      const { skipMock, limitMock } = mockFindChain(mockList);
+
+      // Act
+      const response = await request(app)
+        .get('/api/publicacoes?page=1&limit=2')
+        .set('x-api-key', 'test-api-key')
+        .send();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(skipMock).toHaveBeenCalledWith(0);
+      expect(limitMock).toHaveBeenCalledWith(3);
+      expect(response.body).toEqual({
+        publicacoes: mockList.slice(0, 2),
+        hasMore: true,
+        nextPage: 2,
+      });
     });
 
     it('should return 500 if database fails (fallback string)', async () => {
-      jest.spyOn(Publicacao, 'find').mockReturnValueOnce({
-        populate: jest.fn().mockReturnValueOnce({
-          sort: jest.fn().mockReturnValueOnce({
-            exec: jest.fn().mockRejectedValueOnce('Falha bizarra no DB' as never),
-          }),
-        }),
-      } as never);
+      mockFindChain('Falha bizarra no DB', true);
 
       const response = await request(app)
         .get('/api/publicacoes')
@@ -61,6 +98,7 @@ describe('Publicacao Controller & Routes Integration Test', () => {
         .send();
 
       expect(response.status).toBe(500);
+      expect(response.body.error).toBe('Erro ao buscar publicações');
     });
   });
 

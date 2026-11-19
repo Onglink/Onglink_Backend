@@ -20,5 +20,8 @@ const publicacaoSchema = new Schema_publi({
     timestamps: true 
 });
 
+// Índice para acelerar a paginação ordenada sem estourar memória
+publicacaoSchema.index({ createdAt: -1, _id: -1 });
+
 const Publicacao = model('Publicacao', publicacaoSchema, 'publicacoes');
 export default Publicacao;
